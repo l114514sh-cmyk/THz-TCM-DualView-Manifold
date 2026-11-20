@@ -1,0 +1,19 @@
+# Python environments & caches
+.venv/
+**/.venv/
+__pycache__/
+**/__pycache__/
+*.py[cod]
+
+# Office temporary lock files
+~$*.docx
+~$*.xlsx
+
+# Large raw Excel workbooks (full-precision .npz spectral caches are included for instant reproducibility)
+*.xlsx
+
+# Scratch notes & superseded drafts / backup folders
+THz_TCM_Research/01_原始实验数据/新建文件夹/
+THz_TCM_Research/01_原始实验数据/枣仁/
+THz_TCM_Research/01_原始实验数据/新建 文本文档.txt
+THz_TCM_Research/06_论文写作/01_Title_and_Abstract.docx

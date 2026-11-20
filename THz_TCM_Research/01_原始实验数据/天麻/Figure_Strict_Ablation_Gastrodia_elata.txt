@@ -1,0 +1,5 @@
+                  Configuration Accuracy (%)    Delta Acc (%) Macro-F1
+            Full Proposed Model        96.05 0.00 (Reference)   0.9607
+     w/o MC-UVE (Full Spectrum)        95.56           -0.49%   0.9561
+w/o Refractive Index (Abs Only)        94.57           -1.48%   0.9459
+  w/o SG-Derivative (Raw Fused)        96.79           +0.74%   0.9679

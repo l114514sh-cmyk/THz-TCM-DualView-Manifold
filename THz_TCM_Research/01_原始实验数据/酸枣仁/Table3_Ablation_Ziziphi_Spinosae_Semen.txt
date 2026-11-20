@@ -1,0 +1,8 @@
+Table 3. Ablation evaluation metrics for Ziziphi Spinosae Semen across different stages (5-fold CV).
+
+| Model Configuration                      |   Accuracy (%) |   Precision (%) |   Recall (%) |   Macro-F1 |
+|:-----------------------------------------|---------------:|----------------:|-------------:|-----------:|
+| Model 1: Raw Absorption (Baseline)       |           92.6 |           92.66 |         92.6 |     0.9261 |
+| Model 2: SG 2nd-Der (Abs Only)           |           92.4 |           92.46 |         92.4 |     0.9241 |
+| Model 3: Dual-Channel (Full Spectrum)    |           95.4 |           95.46 |         95.4 |     0.9542 |
+| Model 4: Proposed (Dual + Nested MC-UVE) |           98   |           98    |         98   |     0.98   |

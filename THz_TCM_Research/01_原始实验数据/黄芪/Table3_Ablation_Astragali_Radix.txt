@@ -1,0 +1,8 @@
+Table 3. Ablation evaluation metrics for Astragali Radix across different stages (5-fold CV).
+
+| Model Configuration                      |   Accuracy (%) |   Precision (%) |   Recall (%) |   Macro-F1 |
+|:-----------------------------------------|---------------:|----------------:|-------------:|-----------:|
+| Model 1: Raw Absorption (Baseline)       |          88.83 |           88.91 |        88.86 |     0.8885 |
+| Model 2: SG 2nd-Der (Abs Only)           |          85.61 |           85.57 |        85.55 |     0.8553 |
+| Model 3: Dual-Channel (Full Spectrum)    |          91.07 |           91.12 |        91.06 |     0.9107 |
+| Model 4: Proposed (Dual + Nested MC-UVE) |          89.08 |           89.12 |        89.09 |     0.8909 |
