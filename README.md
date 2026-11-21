@@ -85,4 +85,4 @@ python THz_TCM_Research/04_Python数据处理/build_submission_docx.py
 
 ## Data Availability & Citation
 
-The cached dual-channel THz-TDS spectra (`.npz`), pellet-grouped scripts, and audit logs are publicly provided in this repository. Raw instrument `.xlsx` files were acquired and provided by Yin Shen (Chongqing Medical University) as part of a shared research resource. For inquiries regarding raw time-domain exports or collaboration, please contact the corresponding author: **Yin Shen** (`shenyin285819016@126.com`).
+The cached dual-channel THz-TDS spectra (`.npz`), pellet-grouped scripts, and audit logs are publicly provided in this repository. Raw instrument `.xlsx` files were acquired by previous students in Yin Shen's research group and provided by Yin Shen (Chongqing Medical University) as part of a shared research resource. For inquiries regarding raw time-domain exports or collaboration, please contact the corresponding author: **Yin Shen** (`shenyin285819016@126.com`).
