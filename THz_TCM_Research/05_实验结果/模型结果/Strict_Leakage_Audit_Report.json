@@ -1,4 +1,6 @@
 {
+  "qc_rule": "Unified Single-Spectrum Physical Bound: 1.2 <= mean(n) <= 2.6 and mean(alpha) <= 55.0 cm^-1",
+  "cv_protocol": "Pellet-Grouped StratifiedGroupKFold (5-scan contiguous pellet blocks)",
   "audit_1_differential_probe": {
     "max_feat_diff": 0.0,
     "stab_diff": 0.0,
@@ -8,143 +10,98 @@
   },
   "audit_2_qc_comparison": {
     "Astragali Radix (Root)": {
-      "raw_all": {
-        "n": 403,
-        "acc": 92.80397022332507,
-        "mean": 92.79320987654322,
-        "sd": 4.700020430157272,
-        "f1": 0.9279287785471886
-      },
-      "strict_fold_internal_qc": {
-        "n": 398,
-        "acc": 91.4572864321608,
-        "mean": 91.44303797468353,
-        "sd": 3.4377548120441572,
-        "f1": 0.9149556072230051
-      },
-      "pre_cv_qc2": {
-        "n": 397,
-        "acc": 93.19899244332494,
-        "mean": 93.18987341772151,
-        "sd": 2.731612134800836,
-        "f1": 0.9321246138534518
-      }
+      "raw_n": 403,
+      "raw_acc": 86.1,
+      "raw_mean_sd": "86.14% ± 7.27%",
+      "qc_n": 397,
+      "qc_pellets": 80,
+      "qc_acc": 87.66,
+      "qc_mean_sd": "87.64% ± 3.08%",
+      "qc_f1": 0.8769
     },
     "Ziziphi Spinosae (Seed)": {
-      "raw_all": {
-        "n": 500,
-        "acc": 97.39999999999999,
-        "mean": 97.4,
-        "sd": 1.624807680927192,
-        "f1": 0.9740396009900248
-      },
-      "strict_fold_internal_qc": {
-        "n": 500,
-        "acc": 97.39999999999999,
-        "mean": 97.4,
-        "sd": 1.624807680927192,
-        "f1": 0.9740396009900248
-      },
-      "pre_cv_qc2": {
-        "n": 500,
-        "acc": 97.39999999999999,
-        "mean": 97.4,
-        "sd": 1.624807680927192,
-        "f1": 0.9740396009900248
-      }
+      "raw_n": 500,
+      "raw_acc": 95.4,
+      "raw_mean_sd": "95.40% ± 2.73%",
+      "qc_n": 499,
+      "qc_pellets": 100,
+      "qc_acc": 96.39,
+      "qc_mean_sd": "96.40% ± 2.33%",
+      "qc_f1": 0.964
     },
     "Gastrodia elata (Tuber)": {
-      "raw_all": {
-        "n": 405,
-        "acc": 99.25925925925925,
-        "mean": 99.25925925925927,
-        "sd": 0.9876543209876558,
-        "f1": 0.992598164129139
-      },
-      "strict_fold_internal_qc": {
-        "n": 404,
-        "acc": 99.75247524752476,
-        "mean": 99.75,
-        "sd": 0.5,
-        "f1": 0.9975246918118765
-      },
-      "pre_cv_qc2": {
-        "n": 404,
-        "acc": 99.75247524752476,
-        "mean": 99.75,
-        "sd": 0.5,
-        "f1": 0.9975246918118765
-      }
+      "raw_n": 405,
+      "raw_acc": 98.77,
+      "raw_mean_sd": "98.76% ± 0.79%",
+      "qc_n": 404,
+      "qc_pellets": 82,
+      "qc_acc": 98.51,
+      "qc_mean_sd": "98.51% ± 0.51%",
+      "qc_f1": 0.9852
     }
   },
-  "audit_3_multi_seed": {
+  "audit_3_multiseed_stability": {
     "Astragali Radix (Root)": {
-      "seeds": [
-        42,
-        100,
-        2026
-      ],
-      "seed_accs": [
-        93.19899244332494,
-        94.20654911838791,
-        91.93954659949623
-      ],
-      "multi_seed_mean": 93.1150293870697,
-      "multi_seed_sd": 0.9274022684456135,
-      "multi_seed_f1": 0.9311625626485492
+      "per_seed_acc": {
+        "42": 87.66,
+        "100": 87.15,
+        "2026": 87.66
+      },
+      "mean_acc": 87.49,
+      "sd_acc": 0.24
     },
     "Ziziphi Spinosae (Seed)": {
-      "seeds": [
-        42,
-        100,
-        2026
-      ],
-      "seed_accs": [
-        97.39999999999999,
-        96.8,
-        97.39999999999999
-      ],
-      "multi_seed_mean": 97.19999999999999,
-      "multi_seed_sd": 0.28284271247461634,
-      "multi_seed_f1": 0.9720538332583145
+      "per_seed_acc": {
+        "42": 96.39,
+        "100": 96.19,
+        "2026": 93.19
+      },
+      "mean_acc": 95.26,
+      "sd_acc": 1.46
     },
     "Gastrodia elata (Tuber)": {
-      "seeds": [
-        42,
-        100,
-        2026
-      ],
-      "seed_accs": [
-        99.75247524752476,
-        99.75247524752476,
-        99.5049504950495
-      ],
-      "multi_seed_mean": 99.66996699669967,
-      "multi_seed_sd": 0.11668428732451751,
-      "multi_seed_f1": 0.9967036939706029
+      "per_seed_acc": {
+        "42": 98.51,
+        "100": 97.52,
+        "2026": 99.5
+      },
+      "mean_acc": 98.51,
+      "sd_acc": 0.81
     }
   },
   "audit_4_y_scrambling": {
     "Astragali Radix (Root)": {
+      "n_permutations": 30,
       "theoretical_chance_pct": 25.0,
-      "scrambled_acc": 21.41057934508816,
-      "scrambled_mean": 21.42088607594937,
-      "scrambled_sd": 2.4737526171579263,
-      "scrambled_f1": 0.21354228665865108
+      "observed_acc_pct": 87.66,
+      "null_mean_pct": 24.41,
+      "null_sd_pct": 3.45,
+      "null_min_pct": 17.63,
+      "null_max_pct": 30.73,
+      "n_perm_ge_obs": 0,
+      "empirical_p_value": 0.0323
     },
     "Ziziphi Spinosae (Seed)": {
+      "n_permutations": 30,
       "theoretical_chance_pct": 20.0,
-      "scrambled_acc": 18.8,
-      "scrambled_mean": 18.8,
-      "scrambled_sd": 1.3266499161421599,
-      "scrambled_f1": 0.18810447544824815
+      "observed_acc_pct": 96.39,
+      "null_mean_pct": 20.57,
+      "null_sd_pct": 2.75,
+      "null_min_pct": 15.43,
+      "null_max_pct": 25.85,
+      "n_perm_ge_obs": 0,
+      "empirical_p_value": 0.0323
     },
     "Gastrodia elata (Tuber)": {
+      "n_permutations": 30,
       "theoretical_chance_pct": 25.0,
-      "scrambled_acc": 26.980198019801982,
-      "scrambled_mean": 26.984567901234566,
-      "scrambled_sd": 1.517677675462268,
-      "scrambled_f1": 0.264658243842506
+      "observed_acc_pct": 98.51,
+      "null_mean_pct": 25.06,
+      "null_sd_pct": 5.76,
+      "null_min_pct": 13.61,
+      "null_max_pct": 42.33,
+      "n_perm_ge_obs": 0,
+      "empirical_p_value": 0.0323
     }
   }
 }

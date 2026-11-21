@@ -1,106 +1,53 @@
-# Unified Double-Nested 5-Fold CV Results (Dual-View SW-MCUVE-Manifold Framework)
+# Unified Pellet-Grouped Double-Nested Cross-Validation Summary
 
-Generated with `SEED = 42`, Outer 5-Fold Stratified CV + Inner 3-Fold Stratified CV, 100% intra-sample dual-view physical preprocessing (Scattering-Invariant SNV Morphology + Amplitude-Preserving Dielectric Scale), zero cross-sample leakage.
+- **Primary Validation Protocol**: Outer 5-Fold **Pellet-Grouped `StratifiedGroupKFold`** / Inner 3-Fold **Pellet-Grouped `StratifiedGroupKFold`** (each pellet's 5 replicate scans strictly locked in Train or Test; zero same-pellet leakage).
+- **Unified Single-Spectrum Physical QC**: `1.2 <= mean(n) <= 2.6` and `mean(alpha) <= 55.0 cm^-1` (applied identically across all three botanical matrices).
+- **Fair Input-Controlled Baselines**: Track A (identical 716-dim Raw Dual-Channel `[raw_a, raw_r]`) & Track B (identical 3,222-dim Dual-View `X_dual`).
 
-## Astragali Radix (Root) (n = 397 post-QC, raw = 403, dropped = 6)
-- **Physical QC**: Unsupervised optical bound `1.2 <= n <= 2.6` & global `3xIQR` absorption fence (dropped: `{'Guyang (IM)': 5, 'Gansu (GS)': 1}`)
-- **Post-QC Dual-Channel Fisher Separability ($S_B/S_W$)**: `0.2999`
-- **Overall Double-Nested 5-Fold CV Accuracy**: **93.20%** (5-Fold Mean ± SD: **93.19% ± 2.73%**)
-- **Macro-Averaged Metrics**: Precision `93.35%`, Recall `93.21%`, Macro-F1 `0.9321`
-- **Outer Fold Accuracies**: `[92.5, 97.5, 94.94, 89.87, 91.14]`
+## Astragali Radix (Fibrous Root) (n = 397 post-QC across 80 pellets; raw = 403, dropped = 6)
+- **Pellet-Grouped 5-Fold CV Scan Accuracy**: **87.66%** (`87.64% ± 3.08%`, Macro-F1 `0.8769`)
+- **Pellet-Level Majority-Vote Accuracy**: **92.50%** (`74/80` pellets)
+- **Ungrouped Scan-Level Reference**: `93.20%` (replicate-scan optimism: `+5.54%`)
 
-### Per-Class Classification Metrics
-| Class | n | Correct | Precision (%) | Recall (%) | F1-Score |
+| Model (Input Representation) | Scan Acc (%) | Mean ± SD (%) | Pellet Vote (%) | Δ vs Proposed [95% CI] | p_boot |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| Datong (SX) | 103 | 92 | 94.85 | 89.32 | 0.9200 |
-| Guyang (IM) | 95 | 87 | 96.67 | 91.58 | 0.9405 |
-| Qujing (YN) | 100 | 96 | 91.43 | 96.00 | 0.9366 |
-| Gansu (GS) | 99 | 95 | 90.48 | 95.96 | 0.9314 |
-| **Overall / Macro** | **397** | **370** | **93.35** | **93.21** | **0.9321** |
+| PLS-DA (Raw Dual-Channel) | 84.63 | 84.61 ± 4.56 | 90.00 | +3.02% [-1.51, +7.61] | 0.1960 |
+| RF (Raw Dual-Channel) | 65.74 | 65.79 ± 5.87 | 75.00 | +21.91% [+16.50, +27.82] | 0.0005 |
+| RBF-SVM (Raw Dual-Channel) | 81.61 | 81.61 ± 2.20 | 87.50 | +6.05% [+2.78, +9.32] | 0.0005 |
+| PLS-DA (Dual-View 3222-d) | 83.12 | 83.10 ± 3.39 | 88.75 | +4.53% [+1.24, +8.08] | 0.0130 |
+| RF (Dual-View 3222-d) | 84.89 | 84.86 ± 3.74 | 90.00 | +2.77% [-0.50, +6.30] | 0.1100 |
+| RBF-SVM (Dual-View 3222-d) | 87.41 | 87.40 ± 4.05 | 91.25 | +0.25% [-1.78, +2.76] | 0.9340 |
+| Hard MC-UVE-SVM (Dual-View 3222-d) | 88.41 | 88.39 ± 3.91 | 93.75 | -0.76% [-2.26, +0.26] | 0.3090 |
+| **Proposed Dual-View SW-MCUVE-Manifold** | **87.66** | **87.64 ± 3.08** | **92.50** | Reference | — |
 
-### Ablation Study (Double-Nested 5-Fold CV)
-| Configuration | Overall Acc (%) | Mean ± SD (%) | Delta Acc (%) | Macro-F1 |
-| :--- | :---: | :---: | :---: | :---: |
-| Full Proposed (Dual-View SW-MCUVE-Manifold) | 93.20 | 93.19 ± 2.73 | Reference | 0.9321 |
-| w/o Amplitude-Preserving View (SNV Only) | 89.67 | 89.66 ± 4.02 | -3.53% | 0.8971 |
-| w/o Intra-Sample SNV View (Amplitude Only) | 88.92 | 88.91 ± 3.78 | -4.28% | 0.8891 |
-| w/o Purified Manifold (lambda=0) | 92.19 | 92.18 ± 2.46 | -1.01% | 0.9220 |
-| w/o Refractive Index (Abs Only) | 93.70 | 93.70 ± 1.13 | +0.50% | 0.9375 |
+## Ziziphi Spinosae Semen (Lipid-Rich Seed) (n = 499 post-QC across 100 pellets; raw = 500, dropped = 1)
+- **Pellet-Grouped 5-Fold CV Scan Accuracy**: **96.39%** (`96.40% ± 2.33%`, Macro-F1 `0.9640`)
+- **Pellet-Level Majority-Vote Accuracy**: **100.00%** (`100/100` pellets)
+- **Ungrouped Scan-Level Reference**: `96.99%` (replicate-scan optimism: `+0.60%`)
 
-### Baseline Model Comparison (Double-Nested 5-Fold CV)
-| Model | Overall Acc (%) | Mean ± SD (%) | Macro-Precision (%) | Macro-Recall (%) | Macro-F1 |
+| Model (Input Representation) | Scan Acc (%) | Mean ± SD (%) | Pellet Vote (%) | Δ vs Proposed [95% CI] | p_boot |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| PLS-DA | 82.87 | 82.86 ± 3.85 | 83.26 | 82.84 | 0.8296 |
-| Random Forest | 84.13 | 84.11 ± 5.33 | 84.90 | 84.05 | 0.8420 |
-| Standard RBF-SVM (Full Spectrum) | 89.67 | 89.65 ± 3.91 | 89.68 | 89.65 | 0.8965 |
-| Hard MC-UVE-SVM (Gen-1 Baseline) | 88.92 | 88.90 ± 3.65 | 88.90 | 88.83 | 0.8885 |
-| Proposed (Dual-View SW-MCUVE-Manifold) | 93.20 | 93.19 ± 2.73 | 93.35 | 93.21 | 0.9321 |
+| PLS-DA (Raw Dual-Channel) | 87.37 | 87.39 ± 6.52 | 94.00 | +9.02% [+5.60, +12.80] | 0.0005 |
+| RF (Raw Dual-Channel) | 73.95 | 73.96 ± 6.54 | 81.00 | +22.44% [+17.43, +27.71] | 0.0005 |
+| RBF-SVM (Raw Dual-Channel) | 84.77 | 84.79 ± 4.68 | 92.00 | +11.62% [+8.03, +15.40] | 0.0005 |
+| PLS-DA (Dual-View 3222-d) | 91.18 | 91.19 ± 4.48 | 97.00 | +5.21% [+2.61, +8.02] | 0.0005 |
+| RF (Dual-View 3222-d) | 90.38 | 90.39 ± 4.62 | 90.00 | +6.01% [+2.83, +9.40] | 0.0005 |
+| RBF-SVM (Dual-View 3222-d) | 94.79 | 94.80 ± 2.56 | 100.00 | +1.60% [-0.20, +3.41] | 0.0970 |
+| Hard MC-UVE-SVM (Dual-View 3222-d) | 93.99 | 94.00 ± 3.16 | 98.00 | +2.40% [+0.20, +4.80] | 0.0340 |
+| **Proposed Dual-View SW-MCUVE-Manifold** | **96.39** | **96.40 ± 2.33** | **100.00** | Reference | — |
 
-## Ziziphi Spinosae Semen (Seed) (n = 500 post-QC, raw = 500, dropped = 0)
-- **Physical QC**: Unsupervised optical bound `1.2 <= n <= 2.6` & global `3xIQR` absorption fence (dropped: `{}`)
-- **Post-QC Dual-Channel Fisher Separability ($S_B/S_W$)**: `1.1268`
-- **Overall Double-Nested 5-Fold CV Accuracy**: **97.40%** (5-Fold Mean ± SD: **97.40% ± 1.62%**)
-- **Macro-Averaged Metrics**: Precision `97.41%`, Recall `97.40%`, Macro-F1 `0.9740`
-- **Outer Fold Accuracies**: `[99.0, 98.0, 95.0, 96.0, 99.0]`
+## Gastrodia elata (Starchy Tuber) (n = 404 post-QC across 82 pellets; raw = 405, dropped = 1)
+- **Pellet-Grouped 5-Fold CV Scan Accuracy**: **98.51%** (`98.51% ± 0.51%`, Macro-F1 `0.9852`)
+- **Pellet-Level Majority-Vote Accuracy**: **100.00%** (`82/82` pellets)
+- **Ungrouped Scan-Level Reference**: `99.75%` (replicate-scan optimism: `+1.24%`)
 
-### Per-Class Classification Metrics
-| Class | n | Correct | Precision (%) | Recall (%) | F1-Score |
+| Model (Input Representation) | Scan Acc (%) | Mean ± SD (%) | Pellet Vote (%) | Δ vs Proposed [95% CI] | p_boot |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| Boxed (HB) | 100 | 99 | 98.02 | 99.00 | 0.9851 |
-| SJZ/BZ | 100 | 98 | 98.99 | 98.00 | 0.9849 |
-| Bulk-Bag | 100 | 96 | 95.05 | 96.00 | 0.9552 |
-| Bulk-50g | 100 | 95 | 95.00 | 95.00 | 0.9500 |
-| Tongrentang (AH) | 100 | 99 | 100.00 | 99.00 | 0.9950 |
-| **Overall / Macro** | **500** | **487** | **97.41** | **97.40** | **0.9740** |
-
-### Ablation Study (Double-Nested 5-Fold CV)
-| Configuration | Overall Acc (%) | Mean ± SD (%) | Delta Acc (%) | Macro-F1 |
-| :--- | :---: | :---: | :---: | :---: |
-| Full Proposed (Dual-View SW-MCUVE-Manifold) | 97.40 | 97.40 ± 1.62 | Reference | 0.9740 |
-| w/o Amplitude-Preserving View (SNV Only) | 94.40 | 94.40 ± 2.50 | -3.00% | 0.9440 |
-| w/o Intra-Sample SNV View (Amplitude Only) | 98.40 | 98.40 ± 0.80 | +1.00% | 0.9840 |
-| w/o Purified Manifold (lambda=0) | 97.40 | 97.40 ± 1.96 | +0.00% | 0.9740 |
-| w/o Refractive Index (Abs Only) | 97.20 | 97.20 ± 1.94 | -0.20% | 0.9720 |
-
-### Baseline Model Comparison (Double-Nested 5-Fold CV)
-| Model | Overall Acc (%) | Mean ± SD (%) | Macro-Precision (%) | Macro-Recall (%) | Macro-F1 |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| PLS-DA | 92.80 | 92.80 ± 1.72 | 92.97 | 92.80 | 0.9278 |
-| Random Forest | 92.00 | 92.00 ± 1.67 | 92.07 | 92.00 | 0.9201 |
-| Standard RBF-SVM (Full Spectrum) | 95.20 | 95.20 ± 1.33 | 95.25 | 95.20 | 0.9522 |
-| Hard MC-UVE-SVM (Gen-1 Baseline) | 96.40 | 96.40 ± 2.06 | 96.45 | 96.40 | 0.9641 |
-| Proposed (Dual-View SW-MCUVE-Manifold) | 97.40 | 97.40 ± 1.62 | 97.41 | 97.40 | 0.9740 |
-
-## Gastrodia elata (Tuber, Cross-Matrix Validation) (n = 404 post-QC, raw = 405, dropped = 1)
-- **Physical QC**: Unsupervised optical bound `1.2 <= n <= 2.6` & global `3xIQR` absorption fence (dropped: `{'Bozhou (AH)': 1}`)
-- **Post-QC Dual-Channel Fisher Separability ($S_B/S_W$)**: `1.0064`
-- **Overall Double-Nested 5-Fold CV Accuracy**: **99.75%** (5-Fold Mean ± SD: **99.75% ± 0.50%**)
-- **Macro-Averaged Metrics**: Precision `99.75%`, Recall `99.75%`, Macro-F1 `0.9975`
-- **Outer Fold Accuracies**: `[100.0, 100.0, 100.0, 100.0, 98.75]`
-
-### Per-Class Classification Metrics
-| Class | n | Correct | Precision (%) | Recall (%) | F1-Score |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| Bozhou (AH) | 102 | 102 | 100.00 | 100.00 | 1.0000 |
-| Leishan (GZ) | 100 | 100 | 100.00 | 100.00 | 1.0000 |
-| Changbai (JL) | 102 | 101 | 100.00 | 99.02 | 0.9951 |
-| Yunnan (YN) | 100 | 100 | 99.01 | 100.00 | 0.9950 |
-| **Overall / Macro** | **404** | **403** | **99.75** | **99.75** | **0.9975** |
-
-### Ablation Study (Double-Nested 5-Fold CV)
-| Configuration | Overall Acc (%) | Mean ± SD (%) | Delta Acc (%) | Macro-F1 |
-| :--- | :---: | :---: | :---: | :---: |
-| Full Proposed (Dual-View SW-MCUVE-Manifold) | 99.75 | 99.75 ± 0.50 | Reference | 0.9975 |
-| w/o Amplitude-Preserving View (SNV Only) | 98.76 | 98.76 ± 0.78 | -0.99% | 0.9877 |
-| w/o Intra-Sample SNV View (Amplitude Only) | 99.01 | 99.01 ± 0.92 | -0.74% | 0.9901 |
-| w/o Purified Manifold (lambda=0) | 99.50 | 99.50 ± 0.61 | -0.25% | 0.9951 |
-| w/o Refractive Index (Abs Only) | 98.02 | 98.02 ± 2.00 | -1.73% | 0.9803 |
-
-### Baseline Model Comparison (Double-Nested 5-Fold CV)
-| Model | Overall Acc (%) | Mean ± SD (%) | Macro-Precision (%) | Macro-Recall (%) | Macro-F1 |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| PLS-DA | 97.52 | 97.52 ± 0.78 | 97.59 | 97.54 | 0.9751 |
-| Random Forest | 96.53 | 96.53 ± 2.13 | 96.58 | 96.54 | 0.9655 |
-| Standard RBF-SVM (Full Spectrum) | 95.30 | 95.30 ± 1.44 | 95.56 | 95.28 | 0.9535 |
-| Hard MC-UVE-SVM (Gen-1 Baseline) | 98.02 | 98.02 ± 1.48 | 98.03 | 98.04 | 0.9803 |
-| Proposed (Dual-View SW-MCUVE-Manifold) | 99.75 | 99.75 ± 0.50 | 99.75 | 99.75 | 0.9975 |
+| PLS-DA (Raw Dual-Channel) | 99.01 | 99.00 ± 1.22 | 100.00 | -0.50% [-2.45, +1.25] | 0.7040 |
+| RF (Raw Dual-Channel) | 88.37 | 88.32 ± 4.96 | 91.46 | +10.15% [+5.65, +15.10] | 0.0005 |
+| RBF-SVM (Raw Dual-Channel) | 95.79 | 95.79 ± 3.28 | 97.56 | +2.72% [-0.25, +6.39] | 0.1110 |
+| PLS-DA (Dual-View 3222-d) | 97.77 | 97.78 ± 2.09 | 98.78 | +0.74% [-0.98, +2.77] | 0.5510 |
+| RF (Dual-View 3222-d) | 97.28 | 97.27 ± 1.22 | 100.00 | +1.24% [-0.73, +3.28] | 0.2590 |
+| RBF-SVM (Dual-View 3222-d) | 96.53 | 96.54 ± 2.41 | 97.56 | +1.98% [-0.49, +5.15] | 0.1870 |
+| Hard MC-UVE-SVM (Dual-View 3222-d) | 97.77 | 97.76 ± 2.67 | 98.78 | +0.74% [-0.50, +2.51] | 0.4830 |
+| **Proposed Dual-View SW-MCUVE-Manifold** | **98.51** | **98.51 ± 0.51** | **100.00** | Reference | — |

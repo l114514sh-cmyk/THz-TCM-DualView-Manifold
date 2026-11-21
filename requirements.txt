@@ -1,0 +1,8 @@
+# Tested Python environment: Python 3.12.14
+numpy==2.5.4
+scipy==1.18.1
+scikit-learn==1.9.1
+pandas==3.1.0
+matplotlib==3.11.2
+openpyxl==3.1.5
+Pillow>=10.0.0

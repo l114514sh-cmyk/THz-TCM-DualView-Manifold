@@ -1,7 +1,7 @@
-import os
 import json
 import time
 import warnings
+from pathlib import Path
 import numpy as np
 import pandas as pd
 from scipy.signal import savgol_filter
@@ -9,15 +9,16 @@ from sklearn.cross_decomposition import PLSRegression
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
-from sklearn.model_selection import StratifiedKFold
+from sklearn.model_selection import StratifiedGroupKFold
 from sklearn.metrics import accuracy_score, f1_score
 
 warnings.filterwarnings('ignore')
 
-ROOT_DIR = r"e:\论文"
-DATA_ROOT = os.path.join(ROOT_DIR, "THz_TCM_Research", "01_原始实验数据")
-OUT_RES_DIR = os.path.join(ROOT_DIR, "THz_TCM_Research", "05_实验结果", "模型结果")
-os.makedirs(OUT_RES_DIR, exist_ok=True)
+SCRIPT_DIR = Path(__file__).resolve().parent
+PROJECT_DIR = SCRIPT_DIR.parent
+DATA_ROOT = PROJECT_DIR / "01_原始实验数据"
+OUT_RES_DIR = PROJECT_DIR / "05_实验结果" / "模型结果"
+OUT_RES_DIR.mkdir(parents=True, exist_ok=True)
 
 
 # ==============================================================================
@@ -52,8 +53,29 @@ def extract_batch_features(raw_a_all, raw_r_all):
     return np.array([extract_single_sample_features(raw_a_all[i], raw_r_all[i]) for i in range(len(raw_a_all))])
 
 
+def assign_pellet_groups(y):
+    """Assign deterministic 5-scan contiguous pellet IDs BEFORE QC."""
+    groups = np.empty(len(y), dtype=object)
+    for c in np.unique(y):
+        idx = np.where(y == c)[0]
+        for local_i, g_i in enumerate(idx):
+            groups[g_i] = f"{c}__P{local_i // 5:02d}"
+    return groups
+
+
+def unified_physical_qc(raw_a, raw_r, y, groups):
+    """
+    Identical single-spectrum physical QC used in run_unified_double_nested_all.py:
+    1.2 <= mean(n) <= 2.6 and mean(alpha) <= 55.0 cm^-1.
+    """
+    ma = raw_a.mean(axis=1)
+    mr = raw_r.mean(axis=1)
+    mask = (mr >= 1.2) & (mr <= 2.6) & (ma <= 55.0)
+    return raw_a[mask], raw_r[mask], y[mask], groups[mask]
+
+
 # ==============================================================================
-# 2. Core Locked Training-Fold Estimator (Zero Access to Test Labels or Test Stats)
+# 2. Core Locked Training-Fold Estimator (Zero Access to Test Labels/Stats)
 # ==============================================================================
 def compute_fold_state(X_tr, y_tr, X_te, n_mc=30, pure_ratio=0.35, seed=42):
     scaler = StandardScaler()
@@ -107,32 +129,18 @@ def build_features(X_tr_s, X_te_s, stability, Z_tr_s, Z_te_s, keep_ratio=0.35, a
     return F_tr, F_te
 
 
-def run_double_nested_cv(X, y, seed=42, raw_a=None, fold_internal_iqr=False):
-    """
-    Runs strict Double-Nested 5-Fold CV.
-    If fold_internal_iqr=True, the 3xIQR absorption outlier fence is fitted ONLY on
-    each outer training fold's raw_a, and ONLY filters outer training samples (outer
-    blind test fold is NEVER filtered by any dataset-wide IQR!).
-    """
-    outer_cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=seed)
+def run_pellet_grouped_nested_cv(X, y, groups, seed=42):
+    outer_cv = StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=seed)
     oof_preds = np.empty_like(y)
     fold_accs = []
 
-    for fold_i, (tr_out, te_out) in enumerate(outer_cv.split(X, y), 1):
-        if fold_internal_iqr and raw_a is not None:
-            ma_tr = raw_a[tr_out].mean(axis=1)
-            q1, q3 = np.percentile(ma_tr, [25, 75])
-            iqr = q3 - q1
-            clean_tr_mask = (ma_tr >= q1 - 3.0 * iqr) & (ma_tr <= q3 + 3.0 * iqr)
-            tr_eff = tr_out[clean_tr_mask]
-        else:
-            tr_eff = tr_out
-
-        X_tr_out, y_tr_out = X[tr_eff], y[tr_eff]
+    for fold_i, (tr_out, te_out) in enumerate(outer_cv.split(X, y, groups), 1):
+        assert len(set(groups[tr_out]) & set(groups[te_out])) == 0, "PELLET OVERLAP!"
+        X_tr_out, y_tr_out, g_tr_out = X[tr_out], y[tr_out], groups[tr_out]
         X_te_out, y_te_out = X[te_out], y[te_out]
 
-        inner_cv = StratifiedKFold(n_splits=3, shuffle=True, random_state=seed + fold_i)
-        inner_splits = list(inner_cv.split(X_tr_out, y_tr_out))
+        inner_cv = StratifiedGroupKFold(n_splits=3, shuffle=True, random_state=seed + fold_i)
+        inner_splits = list(inner_cv.split(X_tr_out, y_tr_out, g_tr_out))
         inner_states = [
             compute_fold_state(X_tr_out[itr], y_tr_out[itr], X_tr_out[iva], seed=seed + fold_i)
             for itr, iva in inner_splits
@@ -164,48 +172,64 @@ def run_double_nested_cv(X, y, seed=42, raw_a=None, fold_internal_iqr=False):
         float(np.mean(fold_accs)),
         float(np.std(fold_accs)),
         float(f1_score(y, oof_preds, average='macro')),
-        oof_preds
     )
 
 
+def run_single_permutation_eval(X, y_perm, groups, perm_seed):
+    """
+    Pellet-grouped 5-fold CV under a pellet-level label permutation,
+    re-fitting StandardScaler, MC-UVE, Shrinkage-LDA, and RBF-SVM strictly inside each outer training fold.
+    """
+    outer_cv = StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=perm_seed)
+    oof = np.empty_like(y_perm)
+    for fi, (tr, te) in enumerate(outer_cv.split(X, y_perm, groups), 1):
+        st = compute_fold_state(X[tr], y_perm[tr], X[te], n_mc=15, seed=perm_seed + fi)
+        F_tr, F_te = build_features(*st, keep_ratio=0.35, alpha_w=0.5, latent_w=2.0)
+        clf = SVC(kernel='rbf', C=10, gamma='scale', random_state=perm_seed).fit(F_tr, y_perm[tr])
+        oof[te] = clf.predict(F_te)
+    return float(accuracy_score(y_perm, oof) * 100.0)
+
+
 # ==============================================================================
-# Execute the 4-Stage Strict Zero-Leakage Audit
+# Execute the Unified Pellet-Grouped Leakage & Permutation Audit Suite
 # ==============================================================================
-print("=" * 90)
-print("  STRICT ZERO-LEAKAGE MATHEMATICAL & STATISTICAL AUDIT SUITE")
-print("=" * 90)
+t0 = time.time()
+print("=" * 92)
+print("  UNIFIED PELLET-GROUPED LEAKAGE & MULTI-PERMUTATION AUDIT SUITE")
+print("=" * 92)
 
 DATASETS = [
-    ("Astragali Radix (Root)", os.path.join(DATA_ROOT, "黄芪", "huangqi_fast_cache.npz"), 4),
-    ("Ziziphi Spinosae (Seed)", os.path.join(DATA_ROOT, "酸枣仁", "suanzaoren_fast_cache.npz"), 5),
-    ("Gastrodia elata (Tuber)", os.path.join(DATA_ROOT, "天麻", "tianma_fast_cache.npz"), 4),
+    ("Astragali Radix (Root)", DATA_ROOT / "黄芪" / "huangqi_fast_cache.npz", 4),
+    ("Ziziphi Spinosae (Seed)", DATA_ROOT / "酸枣仁" / "suanzaoren_fast_cache.npz", 5),
+    ("Gastrodia elata (Tuber)", DATA_ROOT / "天麻" / "tianma_fast_cache.npz", 4),
 ]
 
-audit_report = {}
+audit_report = {
+    "qc_rule": "Unified Single-Spectrum Physical Bound: 1.2 <= mean(n) <= 2.6 and mean(alpha) <= 55.0 cm^-1",
+    "cv_protocol": "Pellet-Grouped StratifiedGroupKFold (5-scan contiguous pellet blocks)",
+}
 
 # ------------------------------------------------------------------------------
-# AUDIT 1: Mathematical Differential Probe Test (Zero Cross-Sample Interference)
+# AUDIT 1: Mathematical Differential Perturbation Probe (Code-Level Isolation)
 # ------------------------------------------------------------------------------
-print("\n[AUDIT 1] Differential Blind-Test Probe (Mathematical Proof of Zero Leakage)", flush=True)
+print("\n[AUDIT 1] Differential Blind-Test Perturbation Probe", flush=True)
 d_hq = np.load(DATASETS[0][1], allow_pickle=True)
 ra_hq, rr_hq, y_hq = d_hq['raw_a'], d_hq['raw_r'], d_hq['y']
+g_hq = assign_pellet_groups(y_hq)
+ra_hq, rr_hq, y_hq, g_hq = unified_physical_qc(ra_hq, rr_hq, y_hq, g_hq)
 
-# Verify single-sample preprocessing invariance
-f0_orig = extract_single_sample_features(ra_hq[0], rr_hq[0])
-ra_perturbed = ra_hq.copy()
-rr_perturbed = rr_hq.copy()
-# Corrupt sample #100 with massive synthetic noise (+10,000)
-ra_perturbed[100] = ra_perturbed[100] * 500.0 + 10000.0
-rr_perturbed[100] = rr_perturbed[100] * 500.0 + 10000.0
+ra_pert = ra_hq.copy()
+rr_pert = rr_hq.copy()
+ra_pert[100] = ra_pert[100] * 500.0 + 10000.0
+rr_pert[100] = rr_pert[100] * 500.0 + 10000.0
 X_orig = extract_batch_features(ra_hq, rr_hq)
-X_pert = extract_batch_features(ra_perturbed, rr_perturbed)
+X_pert = extract_batch_features(ra_pert, rr_pert)
 
 non_100 = [i for i in range(len(y_hq)) if i != 100]
 max_feat_diff = float(np.max(np.abs(X_orig[non_100] - X_pert[non_100])))
 
-# Verify fold training state & predictions on other test samples when test sample #100 is corrupted
-outer_cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
-for tr_idx, te_idx in outer_cv.split(X_orig, y_hq):
+outer_cv = StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=42)
+for tr_idx, te_idx in outer_cv.split(X_orig, y_hq, g_hq):
     if 100 in te_idx:
         st_orig = compute_fold_state(X_orig[tr_idx], y_hq[tr_idx], X_orig[te_idx], seed=43)
         st_pert = compute_fold_state(X_pert[tr_idx], y_hq[tr_idx], X_pert[te_idx], seed=43)
@@ -219,12 +243,11 @@ for tr_idx, te_idx in outer_cv.split(X_orig, y_hq):
         pred_mismatch = int(np.sum(p1[other_te] != p2[other_te]))
         break
 
-print(f"  * Max feature deviation on other 402 samples when sample #100 is corrupted: {max_feat_diff:.12e}")
-print(f"  * Max MC-UVE stability vector deviation ||Δs||_∞:                           {stab_diff:.12e}")
-print(f"  * Max Shrinkage-LDA training manifold deviation ||ΔZ_tr||_∞:                {tr_z_diff:.12e}")
-print(f"  * Prediction mismatches on remaining 80 blind test samples in that fold:    {pred_mismatch}/80")
-assert max_feat_diff == 0.0 and stab_diff == 0.0 and tr_z_diff == 0.0 and pred_mismatch == 0, "LEAKAGE DETECTED!"
-print("  >>> [PASS] Mathematically proven: ∂(Train Model & Other Test Predictions) / ∂(Test Sample) ≡ 0.")
+print(f"  * Max feature deviation (other {len(non_100)} samples): {max_feat_diff:.6e}")
+print(f"  * Max MC-UVE stability deviation ||Δs||_∞:             {stab_diff:.6e}")
+print(f"  * Max Shrinkage-LDA manifold deviation ||ΔZ_tr||_∞:    {tr_z_diff:.6e}")
+print(f"  * Prediction mismatches on remaining held-out scans:   {pred_mismatch}/{len(other_te)}")
+assert max_feat_diff == 0.0 and stab_diff == 0.0 and tr_z_diff == 0.0 and pred_mismatch == 0
 
 audit_report["audit_1_differential_probe"] = {
     "max_feat_diff": max_feat_diff,
@@ -234,112 +257,114 @@ audit_report["audit_1_differential_probe"] = {
     "status": "PASS (Exact 0.000000e+00)"
 }
 
-
 # ------------------------------------------------------------------------------
-# AUDIT 2: Fold-Internal Physical QC vs. Pure Single-Spectrum Physical Bound vs. Raw
+# AUDIT 2: Raw Uncleaned vs Unified Single-Spectrum QC (Pellet-Grouped)
 # ------------------------------------------------------------------------------
-print("\n[AUDIT 2] Fold-Internal QC Audit (Eliminating Global 3xIQR Threshold Peeking)", flush=True)
+print("\n[AUDIT 2] Raw Uncleaned vs. Unified Single-Spectrum QC (Pellet-Grouped CV)", flush=True)
 audit_report["audit_2_qc_comparison"] = {}
 
 for name, cp, n_cls in DATASETS:
     d = np.load(cp, allow_pickle=True)
     ra, rr, y = d['raw_a'], d['raw_r'], d['y']
-    mr = rr.mean(axis=1)
-    ma = ra.mean(axis=1)
+    g = assign_pellet_groups(y)
 
-    # Mode A: Raw uncleaned (0 dropped)
     X_raw = extract_batch_features(ra, rr)
-    acc_raw, m_raw, s_raw, f1_raw, _ = run_double_nested_cv(X_raw, y, seed=42)
+    acc_raw, m_raw, s_raw, f1_raw = run_pellet_grouped_nested_cv(X_raw, y, g, seed=42)
 
-    # Mode B: Strictly Single-Spectrum Physical Optical Bound (1.2 <= n <= 2.6 only; depends ONLY on the single spectrum itself!)
-    # Plus Fold-Internal 3xIQR fitted strictly on outer training folds (outer test fold never filtered by global IQR)
-    phys_mask = (mr >= 1.2) & (mr <= 2.6)
-    ra_p, rr_p, y_p = ra[phys_mask], rr[phys_mask], y[phys_mask]
-    X_p = extract_batch_features(ra_p, rr_p)
-    acc_fi, m_fi, s_fi, f1_fi, _ = run_double_nested_cv(X_p, y_p, seed=42, raw_a=ra_p, fold_internal_iqr=True)
+    ra_q, rr_q, y_q, g_q = unified_physical_qc(ra, rr, y, g)
+    X_q = extract_batch_features(ra_q, rr_q)
+    acc_q, m_q, s_q, f1_q = run_pellet_grouped_nested_cv(X_q, y_q, g_q, seed=42)
 
-    # Mode C: Global Physical QC-2 (1.2 <= n <= 2.6 + global 3xIQR)
-    q1a, q3a = np.percentile(ma, [25, 75])
-    qc2_mask = phys_mask & (ma >= q1a - 3.0 * (q3a - q1a)) & (ma <= q3a + 3.0 * (q3a - q1a))
-    X_qc2 = extract_batch_features(ra[qc2_mask], rr[qc2_mask])
-    acc_qc2, m_qc2, s_qc2, f1_qc2, _ = run_double_nested_cv(X_qc2, y[qc2_mask], seed=42)
-
-    print(f"  * {name:<24s}:")
-    print(f"      - Raw Unfiltered (n={len(y)}):                   {acc_raw:6.2f}% ({m_raw:.2f}% ± {s_raw:.2f}%, F1={f1_raw:.4f})")
-    print(f"      - Strict Fold-Internal IQR (n={len(y_p)}):         {acc_fi:6.2f}% ({m_fi:.2f}% ± {s_fi:.2f}%, F1={f1_fi:.4f})")
-    print(f"      - Pre-CV Physical QC-2 (n={ int(qc2_mask.sum()) }):             {acc_qc2:6.2f}% ({m_qc2:.2f}% ± {s_qc2:.2f}%, F1={f1_qc2:.4f})", flush=True)
-
+    print(f"  [{name}]")
+    print(f"    Raw Uncleaned (n={len(y)}):        {acc_raw:.2f}% ({m_raw:.2f}% ± {s_raw:.2f}%, F1={f1_raw:.4f})")
+    print(f"    Unified Single-Spec QC (n={len(y_q)}): {acc_q:.2f}% ({m_q:.2f}% ± {s_q:.2f}%, F1={f1_q:.4f})")
     audit_report["audit_2_qc_comparison"][name] = {
-        "raw_all": {"n": int(len(y)), "acc": acc_raw, "mean": m_raw, "sd": s_raw, "f1": f1_raw},
-        "strict_fold_internal_qc": {"n": int(len(y_p)), "acc": acc_fi, "mean": m_fi, "sd": s_fi, "f1": f1_fi},
-        "pre_cv_qc2": {"n": int(qc2_mask.sum()), "acc": acc_qc2, "mean": m_qc2, "sd": s_qc2, "f1": f1_qc2},
+        "raw_n": int(len(y)),
+        "raw_acc": round(acc_raw, 2),
+        "raw_mean_sd": f"{m_raw:.2f}% ± {s_raw:.2f}%",
+        "qc_n": int(len(y_q)),
+        "qc_pellets": int(len(np.unique(g_q))),
+        "qc_acc": round(acc_q, 2),
+        "qc_mean_sd": f"{m_q:.2f}% ± {s_q:.2f}%",
+        "qc_f1": round(f1_q, 4),
     }
 
-
 # ------------------------------------------------------------------------------
-# AUDIT 3: Multi-Seed Repeated Double-Nested 5-Fold CV (Seeds 42, 100, 2026)
+# AUDIT 3: Multi-Seed Pellet-Grouped Stability (Seeds 42, 100, 2026)
 # ------------------------------------------------------------------------------
-print("\n[AUDIT 3] Multi-Seed Stability Audit (3 Independent Outer/Inner Random Seeds = 15 Blind Folds)", flush=True)
-audit_report["audit_3_multi_seed"] = {}
-SEEDS = [42, 100, 2026]
+print("\n[AUDIT 3] Multi-Seed Pellet-Grouped CV Stability (Seeds: 42, 100, 2026)", flush=True)
+audit_report["audit_3_multiseed_stability"] = {}
 
 for name, cp, n_cls in DATASETS:
     d = np.load(cp, allow_pickle=True)
     ra, rr, y = d['raw_a'], d['raw_r'], d['y']
-    mr, ma = rr.mean(axis=1), ra.mean(axis=1)
-    q1a, q3a = np.percentile(ma, [25, 75])
-    qc2_mask = (mr >= 1.2) & (mr <= 2.6) & (ma >= q1a - 3.0 * (q3a - q1a)) & (ma <= q3a + 3.0 * (q3a - q1a))
-    X_qc2, y_qc2 = extract_batch_features(ra[qc2_mask], rr[qc2_mask]), y[qc2_mask]
+    g = assign_pellet_groups(y)
+    ra_q, rr_q, y_q, g_q = unified_physical_qc(ra, rr, y, g)
+    X_q = extract_batch_features(ra_q, rr_q)
 
-    seed_accs = []
-    seed_f1s = []
-    for s in SEEDS:
-        acc_s, _, _, f1_s, _ = run_double_nested_cv(X_qc2, y_qc2, seed=s)
-        seed_accs.append(acc_s)
-        seed_f1s.append(f1_s)
-    print(f"  * {name:<24s} | Seeds {SEEDS}: {[round(x, 2) for x in seed_accs]} "
-          f"-> Multi-Seed Mean ± SD: {np.mean(seed_accs):.2f}% ± {np.std(seed_accs):.2f}% (F1={np.mean(seed_f1s):.4f})", flush=True)
-    audit_report["audit_3_multi_seed"][name] = {
-        "seeds": SEEDS,
-        "seed_accs": seed_accs,
-        "multi_seed_mean": float(np.mean(seed_accs)),
-        "multi_seed_sd": float(np.std(seed_accs)),
-        "multi_seed_f1": float(np.mean(seed_f1s))
+    seed_accs = {}
+    for sd in [42, 100, 2026]:
+        acc_s, _, _, _ = run_pellet_grouped_nested_cv(X_q, y_q, g_q, seed=sd)
+        seed_accs[str(sd)] = round(acc_s, 2)
+    vals = list(seed_accs.values())
+    print(f"  [{name}] Seeds {seed_accs} -> Mean ± SD: {np.mean(vals):.2f}% ± {np.std(vals):.2f}%", flush=True)
+    audit_report["audit_3_multiseed_stability"][name] = {
+        "per_seed_acc": seed_accs,
+        "mean_acc": round(float(np.mean(vals)), 2),
+        "sd_acc": round(float(np.std(vals)), 2),
     }
 
-
 # ------------------------------------------------------------------------------
-# AUDIT 4: Y-Scrambling / Random Label Permutation Test (Null Hypothesis Test)
+# AUDIT 4: Multi-Permutation Pellet-Level Y-Scrambling (N_perm = 30)
 # ------------------------------------------------------------------------------
-print("\n[AUDIT 4] Y-Scrambling Random Label Permutation Audit (Proving Zero Spurious High-Dim Leakage)", flush=True)
+N_PERM = 30
+print(f"\n[AUDIT 4] Multi-Permutation Pellet-Level Y-Scrambling (N_perm = {N_PERM})", flush=True)
 audit_report["audit_4_y_scrambling"] = {}
 
 for name, cp, n_cls in DATASETS:
     d = np.load(cp, allow_pickle=True)
     ra, rr, y = d['raw_a'], d['raw_r'], d['y']
-    mr, ma = rr.mean(axis=1), ra.mean(axis=1)
-    q1a, q3a = np.percentile(ma, [25, 75])
-    qc2_mask = (mr >= 1.2) & (mr <= 2.6) & (ma >= q1a - 3.0 * (q3a - q1a)) & (ma <= q3a + 3.0 * (q3a - q1a))
-    X_qc2, y_qc2 = extract_batch_features(ra[qc2_mask], rr[qc2_mask]), y[qc2_mask]
+    g = assign_pellet_groups(y)
+    ra_q, rr_q, y_q, g_q = unified_physical_qc(ra, rr, y, g)
+    X_q = extract_batch_features(ra_q, rr_q)
 
-    rng_perm = np.random.RandomState(999)
-    y_scrambled = rng_perm.permutation(y_qc2)
-    acc_scr, m_scr, s_scr, f1_scr, _ = run_double_nested_cv(X_qc2, y_scrambled, seed=42)
+    obs_acc = audit_report["audit_2_qc_comparison"][name]["qc_acc"]
+    uniq_p = np.unique(g_q)
+    pellet_true_y = np.array([y_q[g_q == p][0] for p in uniq_p])
+
+    perm_accs = []
+    for p_i in range(N_PERM):
+        rng_p = np.random.RandomState(1000 + p_i)
+        shuf_pellet_y = rng_p.permutation(pellet_true_y)
+        p_map = dict(zip(uniq_p, shuf_pellet_y))
+        y_perm = np.array([p_map[gi] for gi in g_q])
+        p_acc = run_single_permutation_eval(X_q, y_perm, g_q, perm_seed=2000 + p_i)
+        perm_accs.append(p_acc)
+
+    perm_accs = np.array(perm_accs)
+    n_ge = int(np.sum(perm_accs >= obs_acc))
+    p_emp = float((1 + n_ge) / (N_PERM + 1))
     chance = 100.0 / n_cls
-    print(f"  * {name:<24s} | Theoretical Chance ({n_cls}-class): {chance:5.2f}% | "
-          f"Scrambled Double-Nested Acc: {acc_scr:5.2f}% ({m_scr:.2f}% ± {s_scr:.2f}%, F1={f1_scr:.4f})", flush=True)
+    print(f"  [{name}] Chance={chance:.1f}% | Null ({N_PERM} perms): "
+          f"{perm_accs.mean():.2f}% ± {perm_accs.std():.2f}% (range {perm_accs.min():.2f}%–{perm_accs.max():.2f}%) | "
+          f"Obs={obs_acc:.2f}%, empirical p = {p_emp:.4f}", flush=True)
+
     audit_report["audit_4_y_scrambling"][name] = {
-        "theoretical_chance_pct": chance,
-        "scrambled_acc": acc_scr,
-        "scrambled_mean": m_scr,
-        "scrambled_sd": s_scr,
-        "scrambled_f1": f1_scr
+        "n_permutations": N_PERM,
+        "theoretical_chance_pct": round(chance, 2),
+        "observed_acc_pct": obs_acc,
+        "null_mean_pct": round(float(perm_accs.mean()), 2),
+        "null_sd_pct": round(float(perm_accs.std()), 2),
+        "null_min_pct": round(float(perm_accs.min()), 2),
+        "null_max_pct": round(float(perm_accs.max()), 2),
+        "n_perm_ge_obs": n_ge,
+        "empirical_p_value": round(p_emp, 4),
     }
 
-out_json = os.path.join(OUT_RES_DIR, "Strict_Leakage_Audit_Report.json")
+out_json = OUT_RES_DIR / "Strict_Leakage_Audit_Report.json"
 with open(out_json, "w", encoding="utf-8") as f:
     json.dump(audit_report, f, ensure_ascii=False, indent=2)
 
-print("\n" + "=" * 90)
-print(f"  [AUDIT COMPLETE] All 4 zero-leakage audits passed! Saved to: {out_json}")
-print("=" * 90)
+print("\n" + "=" * 92)
+print(f"  [AUDIT COMPLETE] Saved to {out_json} in {time.time() - t0:.1f}s")
+print("=" * 92)
