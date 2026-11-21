@@ -7,7 +7,7 @@
 This repository contains the reproducible chemometric analysis pipeline, cached dual-channel Terahertz Time-Domain Spectroscopy (THz-TDS) datasets (0.22–1.04 THz), pellet-grouped double-nested cross-validation scripts, input-controlled baseline benchmarks, multi-permutation leakage audits, and publication-grade figures accompanying our manuscript:
 
 > **Dual-View Terahertz Spectroscopy and Stability-Weighted Chemometrics for Classification of Traditional Chinese Medicinal Materials Across Distinct Botanical Matrices**  
-> Sihao Liu, Ziyuan Zhu, Yin Shen\*  
+> Sihao Liu, Ziyuan Zhu, Hongjun Xiang, Wenjing Li, Yin Shen\*  
 > *Chongqing Medical University, Chongqing, China*
 
 ---

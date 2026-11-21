@@ -180,14 +180,17 @@ class DocxBuilder:
                            self._run(zh_caption, size_pt=9.4, color="333333")],
                           align="both", space_before=0, space_after=130, line=250)
 
-    def add_table(self, headers, rows, col_widths_dxa, en_title="", zh_title="", bold_row_indices=None, font_pt=8.8):
+    def add_table(self, headers, rows, col_widths_dxa, en_title="", zh_title="", bold_row_indices=None, font_pt=8.8,
+                  standalone_page=True):
+        if standalone_page:
+            self.add_page_break()
         if self.mode == "zh":
             if zh_title:
-                self.add_para(zh_title, align="left", space_before=140, space_after=60,
+                self.add_para(zh_title, align="left", space_before=80, space_after=60,
                               line=250, bold=True, size_pt=10.0, keep_next=True)
         else:
             if en_title:
-                self.add_para(en_title, align="left", space_before=140, space_after=30 if self.bilingual else 60,
+                self.add_para(en_title, align="left", space_before=80, space_after=30 if self.bilingual else 60,
                               line=250, bold=True, size_pt=10.0, keep_next=True)
             if self.bilingual and zh_title:
                 self.add_para(zh_title, align="left", space_before=0, space_after=60,
@@ -203,12 +206,13 @@ class DocxBuilder:
             '<w:left w:val="none"/><w:right w:val="none"/>'
             '<w:insideH w:val="none"/><w:insideV w:val="none"/>'
             '</w:tblBorders>'
-            '<w:tblCellMar><w:top w:w="50" w:type="dxa"/><w:bottom w:w="50" w:type="dxa"/>'
-            '<w:left w:w="65" w:type="dxa"/><w:right w:w="65" w:type="dxa"/></w:tblCellMar></w:tblPr>'
+            '<w:tblCellMar><w:top w:w="45" w:type="dxa"/><w:bottom w:w="45" w:type="dxa"/>'
+            '<w:left w:w="60" w:type="dxa"/><w:right w:w="60" w:type="dxa"/></w:tblCellMar></w:tblPr>'
         )
 
-        def make_row(cells, is_header=False, is_bold=False):
+        def make_row(cells, is_header=False, is_bold=False, keep_next_row=True):
             tr_pr = '<w:trPr><w:cantSplit/>' + ('<w:tblHeader/>' if is_header else '') + '</w:trPr>'
+            kn_xml = '<w:keepNext/>' if keep_next_row else ''
             tds = []
             for idx, (val, w) in enumerate(zip(cells, col_widths_dxa)):
                 jc = "left" if idx == 0 else "center"
@@ -217,15 +221,19 @@ class DocxBuilder:
                 run = self._run(val, bold=(is_header or is_bold), size_pt=font_pt)
                 tds.append(
                     f'<w:tc><w:tcPr><w:tcW w:w="{w}" w:type="dxa"/>{bdr}{shd}<w:vAlign w:val="center"/></w:tcPr>'
-                    f'<w:p><w:pPr><w:spacing w:before="20" w:after="20" w:line="220" w:lineRule="auto"/><w:jc w:val="{jc}"/></w:pPr>{run}</w:p></w:tc>'
+                    f'<w:p><w:pPr><w:spacing w:before="18" w:after="18" w:line="215" w:lineRule="auto"/><w:jc w:val="{jc}"/>{kn_xml}</w:pPr>{run}</w:p></w:tc>'
                 )
             return f'<w:tr>{tr_pr}{"".join(tds)}</w:tr>'
 
-        all_rows = [make_row(headers, is_header=True)]
+        all_rows = [make_row(headers, is_header=True, keep_next_row=True)]
+        n_data = len(rows)
         for r_i, row in enumerate(rows):
-            all_rows.append(make_row(row, is_header=False, is_bold=(r_i in bold_set)))
+            all_rows.append(make_row(row, is_header=False, is_bold=(r_i in bold_set), keep_next_row=(r_i < n_data - 1)))
         self.body_parts.append(f'<w:tbl>{tbl_pr}<w:tblGrid>{grid}</w:tblGrid>{"".join(all_rows)}</w:tbl>')
-        self.add_para("", space_before=0, space_after=60, line=120, size_pt=6)
+        if standalone_page:
+            self.add_page_break()
+        else:
+            self.add_para("", space_before=0, space_after=60, line=120, size_pt=6)
 
     def save(self, out_path):
         doc_xml = (
@@ -367,7 +375,7 @@ cl.add_para("Cover Letter", align="center", bold=True, size_pt=14, space_after=1
 cl.add_para("Dear Editor-in-Chief and Editorial Board of Spectrochimica Acta Part A: Molecular and Biomolecular Spectroscopy,",
             align="left", space_after=110)
 cl.add_para(
-    "On behalf of my co-authors (Sihao Liu and Ziyuan Zhu), I am pleased to submit our original research manuscript "
+    "On behalf of my co-authors (Sihao Liu, Ziyuan Zhu, Hongjun Xiang, and Wenjing Li), I am pleased to submit our original research manuscript "
     "entitled \"Dual-View Terahertz Spectroscopy and Stability-Weighted Chemometrics for Classification of Traditional "
     "Chinese Medicinal Materials Across Distinct Botanical Matrices\" for consideration for publication in "
     "Spectrochimica Acta Part A: Molecular and Biomolecular Spectroscopy.",
@@ -460,30 +468,32 @@ def build_manuscript(mode="en"):
         "双视图太赫兹光谱与稳定性加权化学计量学用于跨植物基质中药材分类研究"
     )
     if zh_only:
-        m.add_para("刘厶豪ᵃ，朱子元ᵃ，沈印ᵃ,*", align="center", space_before=30, space_after=40, bold=True, size_pt=11.5)
+        m.add_para("刘厶豪ᵃ，朱子元ᵃ，向宏俊ᵃ，李文婧ᵃ，沈印ᵃ,*", align="center", space_before=30, space_after=40, bold=True, size_pt=11.5)
         m.add_para("ᵃ 重庆医科大学，中国重庆 400016", align="center", space_before=0, space_after=40, size_pt=10.5)
         m.add_para(
-            "* 通讯作者：沈印（邮箱：shenyin285819016@126.com；ORCID：https://orcid.org/0000-0002-3221-7875）。"
-            "第一作者：刘厶豪（邮箱：L114514SH@gmail.com）。第二作者：朱子元（邮箱：zzy2630816871@gmail.com；"
-            "ORCID：https://orcid.org/0009-0005-1153-4926）。",
-            align="center", space_before=0, space_after=150, size_pt=9.3, color="444444"
+            "* 通讯作者（第五作者）：沈印（邮箱：shenyin285819016@126.com；ORCID：https://orcid.org/0000-0002-3221-7875）。"
+            "第一作者：刘厶豪（L114514SH@gmail.com）；第二作者：朱子元（zzy2630816871@gmail.com；"
+            "ORCID：https://orcid.org/0009-0005-1153-4926）；第三作者：向宏俊（xhj2164618758@gmail.com）；"
+            "第四作者：李文婧（2712950900@qq.com）。",
+            align="center", space_before=0, space_after=150, size_pt=9.2, color="444444"
         )
     else:
         m.add_para(
-            "Sihao Liuᵃ, Ziyuan Zhuᵃ, Yin Shenᵃ,*",
+            "Sihao Liuᵃ, Ziyuan Zhuᵃ, Hongjun Xiangᵃ, Wenjing Liᵃ, Yin Shenᵃ,*",
             align="center", space_before=30, space_after=40, bold=True, size_pt=11.5
         )
         if bilingual:
-            m.add_para("刘厶豪ᵃ，朱子元ᵃ，沈印ᵃ,*", align="center", space_before=0, space_after=40, size_pt=10.5, color="333333")
+            m.add_para("刘厶豪ᵃ，朱子元ᵃ，向宏俊ᵃ，李文婧ᵃ，沈印ᵃ,*", align="center", space_before=0, space_after=40, size_pt=10.5, color="333333")
         m.add_para(
             "ᵃ Chongqing Medical University, Chongqing 400016, China",
             align="center", italic=True, space_before=0, space_after=40, size_pt=10.2
         )
         m.add_para(
             "* Corresponding author: Yin Shen (E-mail: shenyin285819016@126.com; ORCID: https://orcid.org/0000-0002-3221-7875). "
-            "First author: Sihao Liu (E-mail: L114514SH@gmail.com). Second author: Ziyuan Zhu (E-mail: zzy2630816871@gmail.com; "
-            "ORCID: https://orcid.org/0009-0005-1153-4926).",
-            align="center", space_before=0, space_after=150, size_pt=9.2, color="444444"
+            "Co-authors: Sihao Liu (L114514SH@gmail.com); Ziyuan Zhu (zzy2630816871@gmail.com; "
+            "ORCID: https://orcid.org/0009-0005-1153-4926); Hongjun Xiang (xhj2164618758@gmail.com); "
+            "Wenjing Li (2712950900@qq.com).",
+            align="center", space_before=0, space_after=150, size_pt=9.0, color="444444"
         )
 
     # Abstract
@@ -1094,8 +1104,10 @@ def build_manuscript(mode="en"):
     m.add_body(
         "Sihao Liu: Conceptualization, Methodology, Software, Formal analysis, Visualization, Writing – original draft. "
         "Ziyuan Zhu: Investigation, Validation, Data curation, Writing – review & editing. "
+        "Hongjun Xiang: Formal analysis, Validation, Software, Writing – review & editing. "
+        "Wenjing Li: Data curation, Writing – review & editing. "
         "Yin Shen: Resources, Supervision, Project administration, Writing – review & editing.",
-        "刘厶豪：构思、方法学、软件实现、形式分析、可视化、初稿撰写。朱子元：调研、验证、数据整理、审阅与修改。沈印：资源提供、指导监督、项目管理、审阅与修改。",
+        "刘厶豪：构思、方法学、软件实现、形式分析、可视化、初稿撰写。朱子元：调研、验证、数据整理、审阅与修改。向宏俊：形式分析、验证、软件辅助、审阅与修改。李文婧：数据整理、审阅与修改。沈印：资源提供、指导监督、项目管理、审阅与修改。",
         first_line_indent=0
     )
     m.add_heading("Declaration of competing interest", "利益冲突声明", level=2)
@@ -1191,7 +1203,7 @@ sm.add_para(
     "Dual-View Terahertz Spectroscopy and Stability-Weighted Chemometrics for Classification of Traditional Chinese Medicinal Materials Across Distinct Botanical Matrices",
     align="center", italic=True, size_pt=11.0, space_after=60
 )
-sm.add_para("Sihao Liu, Ziyuan Zhu, Yin Shen* (Chongqing Medical University, Chongqing 400016, China)",
+sm.add_para("Sihao Liu, Ziyuan Zhu, Hongjun Xiang, Wenjing Li, Yin Shen* (Chongqing Medical University, Chongqing 400016, China)",
             align="center", size_pt=10.0, space_after=160)
 
 sm.add_heading("Section S1. Supplementary Figures", level=1)
