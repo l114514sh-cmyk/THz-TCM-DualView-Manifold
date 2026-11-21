@@ -181,7 +181,7 @@ class DocxBuilder:
                           align="both", space_before=0, space_after=130, line=250)
 
     def add_table(self, headers, rows, col_widths_dxa, en_title="", zh_title="", bold_row_indices=None, font_pt=8.8,
-                  standalone_page=True):
+                  standalone_page=False):
         if standalone_page:
             self.add_page_break()
         if self.mode == "zh":
