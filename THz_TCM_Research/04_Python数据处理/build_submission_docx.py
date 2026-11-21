@@ -29,8 +29,12 @@ TM = DATA["Gastrodia_elata"]
 # Native OOXML (.docx) Builder: Supports BOTH Pure-EN and Bilingual (EN+ZH)
 # ==============================================================================
 class DocxBuilder:
-    def __init__(self, bilingual=False):
-        self.bilingual = bilingual
+    def __init__(self, bilingual=False, mode=None):
+        if mode is not None:
+            self.mode = mode  # "en", "bilingual", or "zh"
+        else:
+            self.mode = "bilingual" if bilingual else "en"
+        self.bilingual = (self.mode == "bilingual")
         self.body_parts = []
         self.media_files = []
         self._img_counter = 0
@@ -61,6 +65,9 @@ class DocxBuilder:
         self.body_parts.append(f'<w:p><w:pPr>{"".join(ppr)}</w:pPr>{inner}</w:p>')
 
     def add_title(self, en_title, zh_title=""):
+        if self.mode == "zh":
+            self.add_para(zh_title or en_title, align="center", space_before=80, space_after=120, line=300, bold=True, size_pt=15.0)
+            return
         self.add_para(en_title, align="center", space_before=80, space_after=90, line=300, bold=True, size_pt=14.0)
         if self.bilingual and zh_title:
             self.add_para(zh_title, align="center", space_before=0, space_after=150, line=300, bold=True, size_pt=12.5, color="2B4C7E")
@@ -69,6 +76,10 @@ class DocxBuilder:
         sz_en = 12.5 if level == 1 else 11.2
         sz_zh = 11.2 if level == 1 else 10.2
         sb = 220 if level == 1 else 150
+        if self.mode == "zh":
+            self.add_para(zh_text or en_text, align="left", space_before=sb, space_after=85,
+                          line=280, bold=True, size_pt=13.0 if level == 1 else 11.5, keep_next=True)
+            return
         self.add_para(en_text, align="left", space_before=sb, space_after=40 if self.bilingual else 80,
                       line=280, bold=True, italic=(level == 2), size_pt=sz_en, keep_next=True)
         if self.bilingual and zh_text:
@@ -76,6 +87,10 @@ class DocxBuilder:
                           line=260, bold=True, size_pt=sz_zh, color="2B4C7E", keep_next=True)
 
     def add_body(self, en_text, zh_text="", first_line_indent=420):
+        if self.mode == "zh":
+            self.add_para(zh_text or en_text, align="both", space_before=20, space_after=115,
+                          line=320, first_line_indent=first_line_indent, size_pt=11.0)
+            return
         self.add_para(en_text, align="both", space_before=20, space_after=60 if self.bilingual else 110,
                       line=310, first_line_indent=first_line_indent, size_pt=11.0)
         if self.bilingual and zh_text:
@@ -83,6 +98,10 @@ class DocxBuilder:
                           line=300, first_line_indent=first_line_indent, size_pt=10.4, color="333333")
 
     def add_bullet(self, en_text, zh_text=""):
+        if self.mode == "zh":
+            self.add_para("•  " + (zh_text or en_text), align="both", space_before=20, space_after=80,
+                          line=300, size_pt=10.6)
+            return
         self.add_para("•  " + en_text, align="both", space_before=20, space_after=40 if self.bilingual else 80,
                       line=290, size_pt=10.6)
         if self.bilingual and zh_text:
@@ -147,6 +166,12 @@ class DocxBuilder:
             '</pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r></w:p>'
         )
         self.body_parts.append(drawing_xml)
+        if self.mode == "zh":
+            if zh_caption:
+                self.add_para([self._run(zh_prefix, bold=True, size_pt=9.6),
+                               self._run(zh_caption, size_pt=9.6)],
+                              align="both", space_before=20, space_after=130, line=260)
+            return
         if en_caption:
             self.add_para([self._run(en_prefix, bold=True, size_pt=9.6), self._run(en_caption, size_pt=9.6)],
                           align="both", space_before=20, space_after=40 if self.bilingual else 130, line=250)
@@ -156,12 +181,17 @@ class DocxBuilder:
                           align="both", space_before=0, space_after=130, line=250)
 
     def add_table(self, headers, rows, col_widths_dxa, en_title="", zh_title="", bold_row_indices=None, font_pt=8.8):
-        if en_title:
-            self.add_para(en_title, align="left", space_before=140, space_after=30 if self.bilingual else 60,
-                          line=250, bold=True, size_pt=10.0, keep_next=True)
-        if self.bilingual and zh_title:
-            self.add_para(zh_title, align="left", space_before=0, space_after=60,
-                          line=240, bold=True, size_pt=9.6, color="2B4C7E", keep_next=True)
+        if self.mode == "zh":
+            if zh_title:
+                self.add_para(zh_title, align="left", space_before=140, space_after=60,
+                              line=250, bold=True, size_pt=10.0, keep_next=True)
+        else:
+            if en_title:
+                self.add_para(en_title, align="left", space_before=140, space_after=30 if self.bilingual else 60,
+                              line=250, bold=True, size_pt=10.0, keep_next=True)
+            if self.bilingual and zh_title:
+                self.add_para(zh_title, align="left", space_before=0, space_after=60,
+                              line=240, bold=True, size_pt=9.6, color="2B4C7E", keep_next=True)
         bold_set = set(bold_row_indices or [])
         total_w = sum(col_widths_dxa)
         grid = "".join(f'<w:gridCol w:w="{w}"/>' for w in col_widths_dxa)
@@ -419,45 +449,64 @@ ABSTRACT_ZH = (
 )
 
 
-def build_manuscript(bilingual=False):
-    m = DocxBuilder(bilingual=bilingual)
+def build_manuscript(mode="en"):
+    bilingual = (mode == "bilingual")
+    zh_only = (mode == "zh")
+    m = DocxBuilder(mode=mode)
 
     # Title & Authors
     m.add_title(
         "Dual-View Terahertz Spectroscopy and Stability-Weighted Chemometrics for Classification of Traditional Chinese Medicinal Materials Across Distinct Botanical Matrices",
         "双视图太赫兹光谱与稳定性加权化学计量学用于跨植物基质中药材分类研究"
     )
-    m.add_para(
-        "Sihao Liuᵃ, Ziyuan Zhuᵃ, Yin Shenᵃ,*",
-        align="center", space_before=30, space_after=40, bold=True, size_pt=11.5
-    )
-    if bilingual:
-        m.add_para("刘厶豪ᵃ，朱子元ᵃ，沈印ᵃ,*", align="center", space_before=0, space_after=40, size_pt=10.5, color="333333")
-    m.add_para(
-        "ᵃ Chongqing Medical University, Chongqing 400016, China",
-        align="center", italic=True, space_before=0, space_after=40, size_pt=10.2
-    )
-    m.add_para(
-        "* Corresponding author: Yin Shen (E-mail: shenyin285819016@126.com; ORCID: https://orcid.org/0000-0002-3221-7875). "
-        "First author: Sihao Liu (E-mail: L114514SH@gmail.com). Second author: Ziyuan Zhu (E-mail: zzy2630816871@gmail.com; "
-        "ORCID: https://orcid.org/0009-0005-1153-4926).",
-        align="center", space_before=0, space_after=150, size_pt=9.2, color="444444"
-    )
+    if zh_only:
+        m.add_para("刘厶豪ᵃ，朱子元ᵃ，沈印ᵃ,*", align="center", space_before=30, space_after=40, bold=True, size_pt=11.5)
+        m.add_para("ᵃ 重庆医科大学，中国重庆 400016", align="center", space_before=0, space_after=40, size_pt=10.5)
+        m.add_para(
+            "* 通讯作者：沈印（邮箱：shenyin285819016@126.com；ORCID：https://orcid.org/0000-0002-3221-7875）。"
+            "第一作者：刘厶豪（邮箱：L114514SH@gmail.com）。第二作者：朱子元（邮箱：zzy2630816871@gmail.com；"
+            "ORCID：https://orcid.org/0009-0005-1153-4926）。",
+            align="center", space_before=0, space_after=150, size_pt=9.3, color="444444"
+        )
+    else:
+        m.add_para(
+            "Sihao Liuᵃ, Ziyuan Zhuᵃ, Yin Shenᵃ,*",
+            align="center", space_before=30, space_after=40, bold=True, size_pt=11.5
+        )
+        if bilingual:
+            m.add_para("刘厶豪ᵃ，朱子元ᵃ，沈印ᵃ,*", align="center", space_before=0, space_after=40, size_pt=10.5, color="333333")
+        m.add_para(
+            "ᵃ Chongqing Medical University, Chongqing 400016, China",
+            align="center", italic=True, space_before=0, space_after=40, size_pt=10.2
+        )
+        m.add_para(
+            "* Corresponding author: Yin Shen (E-mail: shenyin285819016@126.com; ORCID: https://orcid.org/0000-0002-3221-7875). "
+            "First author: Sihao Liu (E-mail: L114514SH@gmail.com). Second author: Ziyuan Zhu (E-mail: zzy2630816871@gmail.com; "
+            "ORCID: https://orcid.org/0009-0005-1153-4926).",
+            align="center", space_before=0, space_after=150, size_pt=9.2, color="444444"
+        )
 
     # Abstract
     m.add_heading("Abstract", "摘要", level=1)
     m.add_body(ABSTRACT_EN, ABSTRACT_ZH, first_line_indent=0)
-    m.add_para(
-        [m._run("Keywords: ", bold=True, size_pt=10.5),
-         m._run("Terahertz time-domain spectroscopy (THz-TDS); Traditional Chinese medicinal materials; Dual-view chemometrics; Pellet-grouped nested cross-validation; Stability-weighted MC-UVE; Density functional theory (DFT)", size_pt=10.5)],
-        align="left", space_before=40, space_after=50 if bilingual else 140
-    )
-    if bilingual:
+    if zh_only:
         m.add_para(
-            [m._run("关键词：", bold=True, size_pt=10.2, color="2B4C7E"),
-             m._run("太赫兹时域光谱（THz-TDS）；中药材；双视图化学计量学；压片分组嵌套交叉验证；稳定性加权 MC-UVE；密度泛函理论（DFT）", size_pt=10.2, color="333333")],
-            align="left", space_before=0, space_after=140
+            [m._run("关键词：", bold=True, size_pt=10.5),
+             m._run("太赫兹时域光谱（THz-TDS）；中药材；双视图化学计量学；压片分组嵌套交叉验证；稳定性加权 MC-UVE；密度泛函理论（DFT）", size_pt=10.5)],
+            align="left", space_before=40, space_after=140
         )
+    else:
+        m.add_para(
+            [m._run("Keywords: ", bold=True, size_pt=10.5),
+             m._run("Terahertz time-domain spectroscopy (THz-TDS); Traditional Chinese medicinal materials; Dual-view chemometrics; Pellet-grouped nested cross-validation; Stability-weighted MC-UVE; Density functional theory (DFT)", size_pt=10.5)],
+            align="left", space_before=40, space_after=50 if bilingual else 140
+        )
+        if bilingual:
+            m.add_para(
+                [m._run("关键词：", bold=True, size_pt=10.2, color="2B4C7E"),
+                 m._run("太赫兹时域光谱（THz-TDS）；中药材；双视图化学计量学；压片分组嵌套交叉验证；稳定性加权 MC-UVE；密度泛函理论（DFT）", size_pt=10.2, color="333333")],
+                align="left", space_before=0, space_after=140
+            )
 
     # ==================== 1. Introduction ====================
     m.add_heading("1. Introduction", "1. 引言", level=1)
@@ -1098,7 +1147,7 @@ def build_manuscript(bilingual=False):
 
 
 # Build Pure-EN Submission Manuscript & Verify Citation Order!
-m_en = build_manuscript(bilingual=False)
+m_en = build_manuscript(mode="en")
 en_path = OUT_DIR / "Manuscript_EN_Submission.docx"
 m_en.save(en_path)
 
@@ -1122,10 +1171,15 @@ if cited_order != list(range(1, len(REFS) + 1)):
     print("  Cited order:", cited_order)
 
 # Build Bilingual Reference Copy
-m_bi = build_manuscript(bilingual=True)
+m_bi = build_manuscript(mode="bilingual")
 bi_path = OUT_DIR / "Manuscript_Bilingual_Reference.docx"
 m_bi.save(bi_path)
-print(f"[OK] Saved {en_path.name} ({len(m_en.media_files)} main figs) and {bi_path.name}")
+
+# Build Pure-Chinese Version
+m_zh = build_manuscript(mode="zh")
+zh_path = OUT_DIR / "Manuscript_ZH_Chinese.docx"
+m_zh.save(zh_path)
+print(f"[OK] Saved {en_path.name}, {bi_path.name}, and {zh_path.name} ({len(m_zh.media_files)} main figs)")
 
 
 # ==============================================================================
