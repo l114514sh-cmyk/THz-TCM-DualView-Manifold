@@ -594,8 +594,8 @@ def build_manuscript(mode="en"):
         "Direct pure-powder pellet pressing was performed without polyethylene (PE) dilution and without an additional "
         "oven-drying step: procured herbal powders or directly pulverized herbal materials were compressed in a "
         "hydraulic pellet die (approximate pellet diameter 10–15 mm, dwell holding time 10 s, nominal thickness "
-        "~1.5 mm) to form self-supporting flat discs. Transmission THz-TDS measurements were acquired by Yiyi Yang at "
-        "the Terahertz Spectroscopy Laboratory of Southwest University (Chongqing, China) using a commercial TERA K15 "
+        "~1.5 mm) to form self-supporting flat discs. Transmission THz-TDS measurements were acquired by Yin Shen "
+        "using a commercial TERA K15 "
         "spectrometer (Menlo Systems GmbH, Germany; 1,550 nm fiber laser, 33 mW average power) inside a dry-nitrogen-"
         "purged chamber (< 4% relative humidity, 292 K) to suppress atmospheric water-vapor lines. Sample spectra were "
         "referenced against the empty dry-nitrogen beam path, and frequency-domain optical constants α(ω) and n(ω) "
@@ -604,20 +604,20 @@ def build_manuscript(mode="en"):
         "at 0.50 THz and 65.2–68.4 dB at 1.04 THz (noise floor −73.4 to −74.0 dB), with transmitted sample signals "
         "remaining 27.4–39.1 dB above the noise floor at 1.04 THz (Supplementary Fig. S2). All known and unrecorded "
         "experimental metadata are transparently summarized in Table 1.",
-        "样品采用纯药粉直接压片工艺，未添加聚乙烯（PE）稀释剂，亦未进行额外烘箱烘干：市售药粉或直接粉碎后的药材粉末经模具压制（压片直径约 10–15 mm，保压时间 10 s，标称厚度约 1.5 mm）形成自支撑平整药片。透射式 THz-TDS 测量由西南大学太赫兹光谱实验室杨意艺采用商用 TERA K15 光谱仪（德国 Menlo Systems；1,550 nm 光纤激光器，平均功率 33 mW）在干燥氮气吹扫腔室（相对湿度 < 4%，温度 292 K）内完成，以消除空气水蒸气吸收线干扰。样品光谱以空光路干燥氮气作为光学参比，频域光学常数 α(ω) 与 n(ω) 由仪器软件在 0.22–1.04 THz（358 个频点）直接导出。对原始频域功率谱的直接核查证实，0.50 THz 处参比动态范围为 73.4–73.9 dB，1.04 THz 处为 65.2–68.4 dB（噪声底 −73.4 至 −74.0 dB），1.04 THz 处透射样品信号仍高出噪声底 27.4–39.1 dB（见补充图 S2）。表 1 如实汇总了所有已知及共享档案中未记录的实验元数据。"
+        "样品采用纯药粉直接压片工艺，未添加聚乙烯（PE）稀释剂，亦未进行额外烘箱烘干：市售药粉或直接粉碎后的药材粉末经模具压制（压片直径约 10–15 mm，保压时间 10 s，标称厚度约 1.5 mm）形成自支撑平整药片。透射式 THz-TDS 测量由沈印采用商用 TERA K15 光谱仪（德国 Menlo Systems；1,550 nm 光纤激光器，平均功率 33 mW）在干燥氮气吹扫腔室（相对湿度 < 4%，温度 292 K）内完成，以消除空气水蒸气吸收线干扰。样品光谱以空光路干燥氮气作为光学参比，频域光学常数 α(ω) 与 n(ω) 由仪器软件在 0.22–1.04 THz（358 个频点）直接导出。对原始频域功率谱的直接核查证实，0.50 THz 处参比动态范围为 73.4–73.9 dB，1.04 THz 处为 65.2–68.4 dB（噪声底 −73.4 至 −74.0 dB），1.04 THz 处透射样品信号仍高出噪声底 27.4–39.1 dB（见补充图 S2）。表 1 如实汇总了所有已知及共享档案中未记录的实验元数据。"
     )
 
     # Table 1: Sample Preparation and Measurement Parameters (Major Comment 6)
     m.add_table(
         headers=["Parameter Category", "Specification / Recorded Value", "Notes / Provenance Status"],
         rows=[
-            ["Sample material", "Pure herbal powder (no PE diluent)", "Confirmed by experimenter (Y. Yang)"],
+            ["Sample material", "Pure herbal powder (no PE diluent)", "Confirmed by experimenter (Y. Shen)"],
             ["Pre-drying treatment", "None (no oven-drying step)", "Procured powder or direct milling"],
             ["Pellet diameter & dwell", "~10–15 mm die; 10 s holding time", "Self-supporting pure-powder pellets"],
             ["Nominal thickness", "~1.5 mm", "Per-pellet micrometer log not archived"],
             ["Press load & particle size", "Not recorded in shared archive", "Disclosed as experimental limitation"],
             ["Pellet & scan hierarchy", "~20 pellets/class × 5 consecutive scans", "Verified by 5-scan contiguous blocks"],
-            ["THz-TDS spectrometer", "TERA K15 (Menlo Systems, 1,550 nm, 33 mW)", "Southwest Univ. THz Spectroscopy Lab"],
+            ["THz-TDS spectrometer", "TERA K15 (Menlo Systems, 1,550 nm, 33 mW)", "Transmission mode (Y. Shen)"],
             ["Chamber environment", "Dry N₂ purge, RH < 4%, T = 292 K", "Empty dry-N₂ beam path reference"],
             ["Analyzed spectral band", "0.22–1.04 THz (358 exported points)", "Raw FFT grid Δf = 0.010 THz"],
             ["Measured dynamic range", "Ref: 65.2–68.4 dB; Sample: 27.4–39.1 dB @ 1.04 THz", "Direct from raw freq-domain exports (Fig. S2)"],
@@ -1119,10 +1119,10 @@ def build_manuscript(mode="en"):
     )
     m.add_heading("Acknowledgments", "致谢", level=2)
     m.add_body(
-        "The authors thank Yin Shen (Chongqing Medical University) for providing the shared THz-TDS dataset and "
-        "academic supervision, and Yiyi Yang (Terahertz Spectroscopy Laboratory, Southwest University, Chongqing, "
-        "China) for acquiring the THz-TDS measurements and confirming pellet preparation details.",
-        "作者感谢重庆医科大学沈印老师提供共享 THz-TDS 数据集与学术指导，并感谢西南大学太赫兹光谱实验室杨意艺完成太赫兹光谱采集并核实压片制备细节。",
+        "The authors gratefully acknowledge Chongqing Medical University for computational and research support, "
+        "and thank Yin Shen for providing the shared THz-TDS dataset, experimental acquisition details, and "
+        "academic supervision.",
+        "作者感谢重庆医科大学提供的计算与科研条件支持，并感谢沈印老师提供共享 THz-TDS 数据集、实验采集细节与学术指导。",
         first_line_indent=0
     )
     m.add_heading("Declaration of generative AI and AI-assisted technologies in the writing process",
@@ -1140,12 +1140,12 @@ def build_manuscript(mode="en"):
     m.add_body(
         "The cached dual-channel THz-TDS spectra (.npz), project-relative Python analysis and audit scripts, "
         "requirements.txt, 300 DPI figures, and machine-readable JSON audit reports are publicly available at "
-        "https://github.com/l114514sh-cmyk/THz-TCM-DualView-Manifold. Raw instrument Excel exports were acquired by "
-        "Yiyi Yang and provided by Yin Shen as part of a shared research resource also utilized in other supervised "
+        "https://github.com/l114514sh-cmyk/THz-TCM-DualView-Manifold. Raw instrument Excel exports were acquired and "
+        "provided by Yin Shen as part of a shared research resource also utilized in other supervised "
         "studies; the Dual-View SW-MCUVE-Manifold architecture, pellet-grouped nested validation, input-controlled "
         "statistical benchmarks, and DFT–MC-UVE alignment presented here are unique to this work. Raw exports are "
         "available from the corresponding author upon reasonable request.",
-        "双通道太赫兹光谱缓存（.npz）、相对路径 Python 分析与审计脚本、requirements.txt、300 DPI 图件及机器可读 JSON 审计日志已公开发布于 https://github.com/l114514sh-cmyk/THz-TCM-DualView-Manifold。原始仪器 Excel 导出文件由杨意艺采集、经沈印作为共享研究资源提供（亦用于课题组其他指导研究）；本文提出的双视图 SW-MCUVE-Manifold 架构、压片分组嵌套验证、输入受控统计基准及 DFT–MC-UVE 对齐分析为本研究独有。原始导出文件可向通讯作者合理申请获取。",
+        "双通道太赫兹光谱缓存（.npz）、相对路径 Python 分析与审计脚本、requirements.txt、300 DPI 图件及机器可读 JSON 审计日志已公开发布于 https://github.com/l114514sh-cmyk/THz-TCM-DualView-Manifold。原始仪器 Excel 导出文件由沈印采集并作为共享研究资源提供（亦用于课题组其他指导研究）；本文提出的双视图 SW-MCUVE-Manifold 架构、压片分组嵌套验证、输入受控统计基准及 DFT–MC-UVE 对齐分析为本研究独有。原始导出文件可向通讯作者合理申请获取。",
         first_line_indent=0
     )
 
