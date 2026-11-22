@@ -101,4 +101,24 @@
 - **主力端核验与采纳结论**：`✅ 代码审计通过、零数据泄露，正式归档为 Rebuttal 储备`。
   - **代码逐行核查结论**：主力端实际读取并审阅了 `run_round1_dl_benchmark.py`（1–300 行），确认：（1）`extract_dual_view_3222` 与 `run_unified_double_nested_all.py` 完全一致；（2）`groups` 在 QC 前按 `local_i // 5` 生成；（3）外层与内层均使用 `StratifiedGroupKFold` 且带双层 `assert` 零重叠校验；（4）Track A 均值方差与 Track B `StandardScaler` 均仅在内层训练子折 `X_itr` 上 `fit`，测试折完全盲测。
   - **核心学术价值（Rebuttal 杀手锏）**：直接证明（1）小样本中药压片上端到端 1D-CNN/1D-ResNet 落后本文方法 **17.9–20.5 个百分点**；（2）将本文双视图 3,222 维表征喂给 MLP 后，深度学习直接暴涨 **+15.8% ~ +18.4%**，独立印证了双视图物理表征的核心价值；（3）即使同输入下，本文 SW-MCUVE-Manifold 仍在 3 基质均值和多种子稳定性上全面领先 `Dual-View MLP`。
-  - **正文状态**：暂不修改已投 SAA 初稿，保留作一审返修（Rebuttal）强力证据。
+  - **正文状态**：暂不修改已投 SAA 初稿，保留作后续召回修改 / Rebuttal 强力证据。
+
+---
+
+### [ROUND 2] 2026-11-23 00:09 — 补齐 `1D-Transformer` 基线（GPU）+ 升级 200 次压片级 Y-Scrambling 置换检验（`p < 0.01`）
+
+- **主力端本轮实际做了什么（100% 事实记录）**：
+  1. 登记用户重要决策：后续将召回已投 SAA 稿件进行进一步修改；在用户明确具体修改清单前，主力端暂不修改论文正文与 `build_submission_docx.py`。
+  2. 为同时强化后续召回改稿与未来审稿防御，设计并下发 **ROUND 2 双子任务**：
+     - **任务 2A（GPU）**：补齐第 4 个现代深度学习基线 **`1D-Transformer`（Spectral Patch Transformer）**（Track A `(2, 358)` 输入），严格复用 ROUND 1 零泄露协议与 3 种子 `[42, 100, 2026]`；
+     - **任务 2B（CPU）**：将 `run_strict_leakage_audit.py` 的 30 次压片级 Y-scrambling（经验 $p = 1/31 = 0.0323$）升级为 **200 次独立压片级置换检验**（目标将经验 $p$ 值压至 $1/201 \approx 0.0050 < 0.01$）。
+
+- **下发给算力端的明确指令（ROUND 2）**：
+  1. 先 `git pull --ff-only` 同步至最新 HEAD；
+  2. **任务 2A（`1D-Transformer`，GPU）**：在 Track A `(2, 358)` 上实现轻量化 Spectral Patch Transformer（例如 `Conv1d(2, 64, kernel_size=16, stride=16)` 切出 22 个频谱 token + 可学习位置编码 + 2 层 `TransformerEncoderLayer(d_model=64, nhead=4, dim_feedforward=128, dropout=0.3, batch_first=True)` + GlobalAvgPool + Dropout + Linear），严格复用 ROUND 1 完全一致的 QC、双层 `StratifiedGroupKFold`、`assert` 防泄露断言、折内标准化与 `[42, 100, 2026]` 3 种子协议，输出 Scan Acc / Macro-F1 / Pellet Vote Acc 及 3 基质均值；
+  3. **任务 2B（200 次压片级 Y-Scrambling，CPU）**：严格复用仓库 `THz_TCM_Research/04_Python数据处理/run_strict_leakage_audit.py` 中的统一 QC 与完整双视图 SW-MCUVE-Manifold 管线（保持与 Stage 4 完全一致的压片级置换逻辑：同一压片内所有扫描必须共享同一个置换后的标签，严禁单谱级打乱），在三类药材上各执行 `n_perm = 200` 次独立置换（先验证 0 次未置换观测准确率与原审计一致），输出：观测值 `obs_acc`、200 次零分布 `null_mean ± null_sd`、`null_max`、`count(null >= obs)`、经验 $p = (\text{count}+1)/201$ 及耗时。
+  4. 如实回传完整代码、原始终端输出与 JSON 摘要，绝不隐瞒异常或不利结果。
+
+- **算力端回报**：*（待算力端运行完毕后由主力端原样记录）*
+
+- **主力端核验与采纳结论**：`等待 ROUND 2 运行回报`
