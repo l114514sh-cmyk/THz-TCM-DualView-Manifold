@@ -1,0 +1,139 @@
+{
+  "source": "Colab Compute Worker (ROUND 1, audited by Master Manuscript Agent)",
+  "repo_head": "be21874",
+  "device": "Tesla T4",
+  "seeds": [42, 100, 2026],
+  "elapsed_sec": 420.02,
+  "peak_gpu_mem_mib": 35.54,
+  "models": {
+    "1D-CNN": {
+      "track": "TrackA",
+      "datasets": {
+        "Astragali_Radix": {
+          "scan_acc_mean": 62.47, "scan_acc_sd": 2.53,
+          "macro_f1_mean": 0.6244, "macro_f1_sd": 0.0262,
+          "pellet_acc_mean": 70.0, "pellet_acc_sd": 4.45,
+          "seed42_pellet_ratio": "59/80",
+          "per_seed": {
+            "42": {"scan_acc": 64.7355, "macro_f1": 0.6482, "pellet_acc": 73.75, "pellet_correct": 59, "pellet_total": 80},
+            "100": {"scan_acc": 58.9421, "macro_f1": 0.5879, "pellet_acc": 63.75, "pellet_correct": 51, "pellet_total": 80},
+            "2026": {"scan_acc": 63.728, "macro_f1": 0.637, "pellet_acc": 72.5, "pellet_correct": 58, "pellet_total": 80}
+          }
+        },
+        "Ziziphi_Spinosae_Semen": {
+          "scan_acc_mean": 79.36, "scan_acc_sd": 1.93,
+          "macro_f1_mean": 0.793, "macro_f1_sd": 0.0208,
+          "pellet_acc_mean": 84.33, "pellet_acc_sd": 2.05,
+          "seed42_pellet_ratio": "84/100",
+          "per_seed": {
+            "42": {"scan_acc": 77.3547, "macro_f1": 0.7746, "pellet_acc": 84.0, "pellet_correct": 84, "pellet_total": 100},
+            "100": {"scan_acc": 81.9639, "macro_f1": 0.822, "pellet_acc": 87.0, "pellet_correct": 87, "pellet_total": 100},
+            "2026": {"scan_acc": 78.7575, "macro_f1": 0.7824, "pellet_acc": 82.0, "pellet_correct": 82, "pellet_total": 100}
+          }
+        },
+        "Gastrodia_elata": {
+          "scan_acc_mean": 79.13, "scan_acc_sd": 1.23,
+          "macro_f1_mean": 0.7872, "macro_f1_sd": 0.0127,
+          "pellet_acc_mean": 78.86, "pellet_acc_sd": 2.07,
+          "seed42_pellet_ratio": "63/82",
+          "per_seed": {
+            "42": {"scan_acc": 77.4752, "macro_f1": 0.7707, "pellet_acc": 76.8293, "pellet_correct": 63, "pellet_total": 82},
+            "100": {"scan_acc": 80.4455, "macro_f1": 0.8017, "pellet_acc": 78.0488, "pellet_correct": 64, "pellet_total": 82},
+            "2026": {"scan_acc": 79.4554, "macro_f1": 0.7893, "pellet_acc": 81.7073, "pellet_correct": 67, "pellet_total": 82}
+          }
+        }
+      },
+      "cross_matrix_mean": {
+        "scan_acc_mean": 73.65, "scan_acc_sd": 0.34,
+        "pellet_acc_mean": 77.73, "pellet_acc_sd": 1.06,
+        "seed42_scan_mean": 73.19, "seed42_pellet_mean": 78.19
+      }
+    },
+    "1D-ResNet": {
+      "track": "TrackA",
+      "datasets": {
+        "Astragali_Radix": {
+          "scan_acc_mean": 61.54, "scan_acc_sd": 5.24,
+          "macro_f1_mean": 0.6137, "macro_f1_sd": 0.0516,
+          "pellet_acc_mean": 67.08, "pellet_acc_sd": 5.62,
+          "seed42_pellet_ratio": "60/80",
+          "per_seed": {
+            "42": {"scan_acc": 68.0101, "macro_f1": 0.6771, "pellet_acc": 75.0, "pellet_correct": 60, "pellet_total": 80},
+            "100": {"scan_acc": 55.1637, "macro_f1": 0.5507, "pellet_acc": 62.5, "pellet_correct": 50, "pellet_total": 80},
+            "2026": {"scan_acc": 61.461, "macro_f1": 0.6133, "pellet_acc": 63.75, "pellet_correct": 51, "pellet_total": 80}
+          }
+        },
+        "Ziziphi_Spinosae_Semen": {
+          "scan_acc_mean": 84.77, "scan_acc_sd": 3.4,
+          "macro_f1_mean": 0.8463, "macro_f1_sd": 0.0359,
+          "pellet_acc_mean": 89.67, "pellet_acc_sd": 4.19,
+          "seed42_pellet_ratio": "94/100",
+          "per_seed": {
+            "42": {"scan_acc": 86.9739, "macro_f1": 0.8693, "pellet_acc": 94.0, "pellet_correct": 94, "pellet_total": 100},
+            "100": {"scan_acc": 87.3747, "macro_f1": 0.874, "pellet_acc": 91.0, "pellet_correct": 91, "pellet_total": 100},
+            "2026": {"scan_acc": 79.9599, "macro_f1": 0.7955, "pellet_acc": 84.0, "pellet_correct": 84, "pellet_total": 100}
+          }
+        },
+        "Gastrodia_elata": {
+          "scan_acc_mean": 82.43, "scan_acc_sd": 3.34,
+          "macro_f1_mean": 0.8252, "macro_f1_sd": 0.0305,
+          "pellet_acc_mean": 84.55, "pellet_acc_sd": 3.5,
+          "seed42_pellet_ratio": "73/82",
+          "per_seed": {
+            "42": {"scan_acc": 85.1485, "macro_f1": 0.851, "pellet_acc": 89.0244, "pellet_correct": 73, "pellet_total": 82},
+            "100": {"scan_acc": 84.4059, "macro_f1": 0.8423, "pellet_acc": 84.1463, "pellet_correct": 69, "pellet_total": 82},
+            "2026": {"scan_acc": 77.7228, "macro_f1": 0.7823, "pellet_acc": 80.4878, "pellet_correct": 66, "pellet_total": 82}
+          }
+        }
+      },
+      "cross_matrix_mean": {
+        "scan_acc_mean": 76.25, "scan_acc_sd": 2.89,
+        "pellet_acc_mean": 80.43, "pellet_acc_sd": 4.14,
+        "seed42_scan_mean": 80.04, "seed42_pellet_mean": 86.01
+      }
+    },
+    "Dual-View MLP": {
+      "track": "TrackB",
+      "datasets": {
+        "Astragali_Radix": {
+          "scan_acc_mean": 84.8, "scan_acc_sd": 2.6,
+          "macro_f1_mean": 0.8477, "macro_f1_sd": 0.026,
+          "pellet_acc_mean": 89.58, "pellet_acc_sd": 3.12,
+          "seed42_pellet_ratio": "75/80",
+          "per_seed": {
+            "42": {"scan_acc": 88.4131, "macro_f1": 0.8838, "pellet_acc": 93.75, "pellet_correct": 75, "pellet_total": 80},
+            "100": {"scan_acc": 83.6272, "macro_f1": 0.836, "pellet_acc": 88.75, "pellet_correct": 71, "pellet_total": 80},
+            "2026": {"scan_acc": 82.3678, "macro_f1": 0.8233, "pellet_acc": 86.25, "pellet_correct": 69, "pellet_total": 80}
+          }
+        },
+        "Ziziphi_Spinosae_Semen": {
+          "scan_acc_mean": 94.59, "scan_acc_sd": 0.85,
+          "macro_f1_mean": 0.946, "macro_f1_sd": 0.0085,
+          "pellet_acc_mean": 98.0, "pellet_acc_sd": 1.41,
+          "seed42_pellet_ratio": "99/100",
+          "per_seed": {
+            "42": {"scan_acc": 95.1904, "macro_f1": 0.952, "pellet_acc": 99.0, "pellet_correct": 99, "pellet_total": 100},
+            "100": {"scan_acc": 93.3868, "macro_f1": 0.934, "pellet_acc": 96.0, "pellet_correct": 96, "pellet_total": 100},
+            "2026": {"scan_acc": 95.1904, "macro_f1": 0.952, "pellet_acc": 99.0, "pellet_correct": 99, "pellet_total": 100}
+          }
+        },
+        "Gastrodia_elata": {
+          "scan_acc_mean": 96.78, "scan_acc_sd": 0.88,
+          "macro_f1_mean": 0.9679, "macro_f1_sd": 0.0087,
+          "pellet_acc_mean": 97.97, "pellet_acc_sd": 1.15,
+          "seed42_pellet_ratio": "81/82",
+          "per_seed": {
+            "42": {"scan_acc": 97.5248, "macro_f1": 0.9753, "pellet_acc": 98.7805, "pellet_correct": 81, "pellet_total": 82},
+            "100": {"scan_acc": 95.5446, "macro_f1": 0.9557, "pellet_acc": 96.3415, "pellet_correct": 79, "pellet_total": 82},
+            "2026": {"scan_acc": 97.2772, "macro_f1": 0.9728, "pellet_acc": 98.7805, "pellet_correct": 81, "pellet_total": 82}
+          }
+        }
+      },
+      "cross_matrix_mean": {
+        "scan_acc_mean": 92.06, "scan_acc_sd": 1.21,
+        "pellet_acc_mean": 95.18, "pellet_acc_sd": 1.47,
+        "seed42_scan_mean": 93.71, "seed42_pellet_mean": 97.18
+      }
+    }
+  }
+}
