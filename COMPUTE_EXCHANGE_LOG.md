@@ -51,6 +51,42 @@
   3. 仅运行一段只读校验脚本：加载 3 个 `.npz` 文件，应用统一 QC（`1.2 <= mean(n) <= 2.6` 且 `mean(alpha) <= 55.0`）并按 `pellet_id = (class, local_idx // 5)` 统计压片数，回报实际跑出的保留谱数与压片数，核对是否与主力端锁定基准（黄芪 `397/80`、酸枣仁 `499/100`、天麻 `404/82`）完全一致；
   4. 阅读仓库中的 `HANDOFF_PROJECT_SUMMARY.md` 和 `THz_TCM_Research/04_Python数据处理/run_unified_double_nested_all.py`，确认已理解口径后，等待主力端按需下发正式重算力任务（不要擅自改动论文口径或自创实验）。
 
-- **算力端回报**：*（待用户复制粘贴算力端回复后，由主力端原样记录于此）*
+- **算力端回报（2026-11-22 23:42 原样记录）**：
+  - **状态**：`已完成`（零报错，耗时 12 秒，使用副号免费版未消耗 Colab Pro 额度）。
+  - **仓库版本**：`Repo HEAD: f42d480`（与主力端一致）。
+  - **实测环境**：`Tesla T4 (15,360 MiB VRAM)`，`CUDA=True`，`CPU=2 cores`，`RAM=12.67 GiB`，`Python 3.13.16`，`numpy 2.4.6`，`scipy 1.16.3`，`scikit-learn 1.6.1`，`torch 2.14.1+cu130`。
+  - **只读 QC & 压片校验原始输出**：
+    - 黄芪：`raw=403 -> QC_kept=397 scans, 80 pellets (dropped=6)`
+    - 酸枣仁：`raw=500 -> QC_kept=499 scans, 100 pellets (dropped=1)`
+    - 天麻：`raw=405 -> QC_kept=404 scans, 82 pellets (dropped=1)`
+    - 总计：`raw=1308 -> QC_kept=1300 scans, 262 pellets`，`freq=0.222015~1.039124 THz (358 pts)`。
 
-- **主力端核验与采纳结论**：`等待 Round 0 握手回报`
+- **主力端核验与采纳结论**：`✅ 已通过（ROUND 0 核验零偏差）`。代码核查确认 `groups` 在 QC 掩码之前按 `local_i // 5` 生成，避免剔除单谱导致后续压片编号错位；与主力端基准 100% 一致。
+
+---
+
+### [ROUND 1] 2026-11-22 23:43 — Rebuttal 储备：严格压片分组 1D 深度学习公平对比基准（GPU）
+
+- **主力端本轮实际做了什么（100% 事实记录）**：
+  1. 完整核验了 Colab 算力端回传的 `ROUND 0` 原始输出与只读代码，确认环境（Tesla T4 + PyTorch CUDA）、仓库 HEAD（`f42d480`）、数据量与压片分组逻辑 100% 一致，并在本台账中归档。
+  2. 针对 *Spectrochimica Acta Part A* 审稿人极高概率提出的“为何未与 1D 深度学习基线（1D-CNN / 1D-ResNet / MLP）对比”问题，设计了 **ROUND 1 严格防泄露 GPU 深度学习基准实验**（作为 Rebuttal 储备，**暂不修改已提交正文**）。
+  3. 明确锁定输入轨道（Track A 双通道原始光谱 `2×358` + Track B 同输入双视图特征 `3,222` 维）、外层 5 折压片分组划分（与 `run_unified_double_nested_all.py` 完全相同的 `StratifiedGroupKFold(n_splits=5)`）、内层压片分组早停验证（严禁看外层测试折早停）、折内标准化及 3 种子均值汇报规范。
+
+- **下发给算力端的明确指令（ROUND 1）**：
+  在 Tesla T4 GPU 上编写并运行独立脚本 `run_colab_dl_baselines.py`（仅在 Colab 内存/临时目录运行，输出完整终端日志 + JSON 摘要），严格按以下防泄露协议在三类药材（黄芪、酸枣仁、天麻）上评估 **3 个代表性深度学习基线**：
+  1. **Model 1 — 1D-CNN（Track A 原始双通道输入 `(2, 358)`）**：轻量级 3 层 1D 卷积（Conv1d + BatchNorm1d + ReLU + MaxPool + GlobalAvgPool + Dropout + Linear），每通道严格按外层训练折做逐通道标准化。
+  2. **Model 2 — 1D-ResNet（Track A 原始双通道输入 `(2, 358)`）**：轻量级 1D 残差网络（2–3 个 Residual Block + GlobalAvgPool + Dropout + Linear），同样仅在训练折内拟合标准化。
+  3. **Model 3 — Dual-View MLP（Track B 同输入 3,222 维双视图特征）**：复用 `run_unified_double_nested_all.py` 中的双视图特征构造（或精确等价实现），2 层隐藏层 + BatchNorm + ReLU + Dropout + Weight Decay，`StandardScaler` 严格在训练折内拟合。
+  4. **防泄露硬性要求**：
+     - 外层划分必须与主实验完全一致：`StratifiedGroupKFold(n_splits=5)`（分组键 `pellet_id = (class, local_idx // 5)`）；
+     - 早停（Early Stopping）与最佳权重挑选**严禁使用外层测试折**，必须从外层训练折内部再按压片分组切分约 20% 压片作为内层验证集（`GroupShuffleSplit` / `StratifiedGroupKFold`）；
+     - 跑 `3` 个随机种子（`42, 100, 2026`），汇报每个模型在每个基质上的：
+       - **Scan-level Accuracy（均值 ± 标准差）** & **Macro-F1**
+       - **Pellet-level Majority-Vote Accuracy（均值 ± 标准差，以及 seed=42 的精确正确压片数 `k/N`）**
+       - **3 基质跨矩阵平均准确率（Scan / Pellet）**
+       - 单模型总运行耗时与 GPU 显存占用。
+     - 如实汇报真实结果，哪怕某深度学习模型超过或低于我们的 SW-MCUVE-Manifold（Scan `94.19%` / Pellet `97.50%`），绝不隐瞒、不调参刷榜。
+
+- **算力端回报**：*（待算力端运行完毕后由主力端原样记录）*
+
+- **主力端核验与采纳结论**：`等待 ROUND 1 运行回报`
