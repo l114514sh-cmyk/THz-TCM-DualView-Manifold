@@ -1,0 +1,50 @@
+{
+  "source": "Colab Compute Worker (ROUND 2A, audited by Master Manuscript Agent)",
+  "repo_head": "dc7f8f7",
+  "model": "1D-Transformer",
+  "track": "TrackA",
+  "device": "Tesla T4",
+  "seeds": [42, 100, 2026],
+  "elapsed_sec": 187.38,
+  "peak_gpu_mem_mib": 24.09,
+  "datasets": {
+    "Astragali_Radix": {
+      "scan_acc_mean": 64.74, "scan_acc_sd": 1.44,
+      "macro_f1_mean": 0.6468, "macro_f1_sd": 0.014,
+      "pellet_acc_mean": 70.42, "pellet_acc_sd": 1.56,
+      "seed42_pellet_ratio": "55/80",
+      "per_seed": {
+        "42": {"scan_acc": 62.7204, "macro_f1": 0.6271, "pellet_acc": 68.75, "pellet_correct": 55, "pellet_total": 80},
+        "100": {"scan_acc": 65.995, "macro_f1": 0.6551, "pellet_acc": 72.5, "pellet_correct": 58, "pellet_total": 80},
+        "2026": {"scan_acc": 65.4912, "macro_f1": 0.6582, "pellet_acc": 70.0, "pellet_correct": 56, "pellet_total": 80}
+      }
+    },
+    "Ziziphi_Spinosae_Semen": {
+      "scan_acc_mean": 71.48, "scan_acc_sd": 0.81,
+      "macro_f1_mean": 0.7132, "macro_f1_sd": 0.0073,
+      "pellet_acc_mean": 78.33, "pellet_acc_sd": 0.94,
+      "seed42_pellet_ratio": "79/100",
+      "per_seed": {
+        "42": {"scan_acc": 71.9439, "macro_f1": 0.7129, "pellet_acc": 79.0, "pellet_correct": 79, "pellet_total": 100},
+        "100": {"scan_acc": 70.3407, "macro_f1": 0.7044, "pellet_acc": 79.0, "pellet_correct": 79, "pellet_total": 100},
+        "2026": {"scan_acc": 72.1443, "macro_f1": 0.7222, "pellet_acc": 77.0, "pellet_correct": 77, "pellet_total": 100}
+      }
+    },
+    "Gastrodia_elata": {
+      "scan_acc_mean": 94.06, "scan_acc_sd": 0.4,
+      "macro_f1_mean": 0.9407, "macro_f1_sd": 0.004,
+      "pellet_acc_mean": 97.15, "pellet_acc_sd": 1.15,
+      "seed42_pellet_ratio": "79/82",
+      "per_seed": {
+        "42": {"scan_acc": 94.0594, "macro_f1": 0.9407, "pellet_acc": 96.3415, "pellet_correct": 79, "pellet_total": 82},
+        "100": {"scan_acc": 93.5644, "macro_f1": 0.9358, "pellet_acc": 96.3415, "pellet_correct": 79, "pellet_total": 82},
+        "2026": {"scan_acc": 94.5545, "macro_f1": 0.9456, "pellet_acc": 98.7805, "pellet_correct": 81, "pellet_total": 82}
+      }
+    }
+  },
+  "cross_matrix_mean": {
+    "scan_acc_mean": 76.76, "scan_acc_sd": 0.48,
+    "pellet_acc_mean": 81.97, "pellet_acc_sd": 0.51,
+    "seed42_scan_mean": 76.24, "seed42_pellet_mean": 81.36
+  }
+}

@@ -119,6 +119,17 @@
   3. **任务 2B（200 次压片级 Y-Scrambling，CPU）**：严格复用仓库 `THz_TCM_Research/04_Python数据处理/run_strict_leakage_audit.py` 中的统一 QC 与完整双视图 SW-MCUVE-Manifold 管线（保持与 Stage 4 完全一致的压片级置换逻辑：同一压片内所有扫描必须共享同一个置换后的标签，严禁单谱级打乱），在三类药材上各执行 `n_perm = 200` 次独立置换（先验证 0 次未置换观测准确率与原审计一致），输出：观测值 `obs_acc`、200 次零分布 `null_mean ± null_sd`、`null_max`、`count(null >= obs)`、经验 $p = (\text{count}+1)/201$ 及耗时。
   4. 如实回传完整代码、原始终端输出与 JSON 摘要，绝不隐瞒异常或不利结果。
 
-- **算力端回报**：*（待算力端运行完毕后由主力端原样记录）*
+- **算力端回报（2026-11-23 00:26 原样记录）**：
+  - **仓库版本**：`Repo HEAD: dc7f8f7`，使用副号免费版 Tesla T4（未消耗主号 200 额度）。
+  - **子任务 2A（`1D-Transformer`，Track A `2×358`）**：`已完成`（`EXIT_CODE: 0`，耗时 `187.38 s`，GPU 显存峰值 `24.09 MiB`）：
+    - 黄芪：Scan **`64.74% ± 1.44%`** / Macro-F1 `0.6468` / Pellet **`70.42% ± 1.56%`**（seed42=`55/80`）
+    - 酸枣仁：Scan **`71.48% ± 0.81%`** / Macro-F1 `0.7132` / Pellet **`78.33% ± 0.94%`**（seed42=`79/100`）
+    - 天麻：Scan **`94.06% ± 0.40%`** / Macro-F1 `0.9407` / Pellet **`97.15% ± 1.15%`**（seed42=`79/82`）
+    - **3 基质跨矩阵均值**：Scan **`76.76% ± 0.48%`** / Pellet **`81.97% ± 0.51%`**（仍落后本文 SW-MCUVE-Manifold `94.19%` / `97.50%` 达 `17.43%` / `15.53%`）。
+  - **子任务 2B（200 次压片级 Y-Scrambling，CPU）**：`PAUSED_FOR_TIME_BUDGET`（严格遵守 15 分钟/基质耗时守卫暂停）：
+    - 在免费 Colab 2 核 CPU 上完成黄芪前 20 次置换（`5.741 s/perm`，`running null_max = 32.24%`，推算单基质需 `19.14 min > 15 min`）；
+    - 如实上报环境差异：Colab `scikit-learn 1.6.1` 下黄芪未置换观测值 `obs_acc = 88.16%`，较本地锁定环境 `scikit-learn 1.9.1`（`87.66%`）高 `+0.50%`（2 条扫描）。
 
-- **主力端核验与采纳结论**：`等待 ROUND 2 运行回报`
+- **主力端核验与采纳结论**：
+  - **2A 结论**：`✅ 代码审计通过、零数据泄露，正式归档`（已逐行核查 `run_round2a_transformer.py` 1–250 行，确认双层 `StratifiedGroupKFold`、`assert` 零重叠、折内标准化均无瑕疵；JSON 已归档至 `THz_TCM_Research/05_实验结果/模型结果/Colab_Round2A_Transformer.json`）。至此 GPU 深度学习对比四件套（`1D-CNN` / `1D-ResNet` / `1D-Transformer` / `Dual-View MLP`）已全部以 **0 费用** 跑完并归档。
+  - **2B 裁决**：**不切主号 Colab Pro（省下 200 额度）**！主力端实测本地工作站拥有 **`16` 核 CPU**（免费 Colab 的 8 倍）且运行精确锁定的 `scikit-learn 1.9.1` 环境（零库版本漂移）。因此 2B 如需执行，直接改由本地 16 核 `.venv` 承接；**Colab 算力端本阶段任务圆满完成，转入休眠待命**。
