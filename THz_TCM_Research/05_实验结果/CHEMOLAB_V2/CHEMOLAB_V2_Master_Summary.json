@@ -1,0 +1,1909 @@
+{
+  "meta": {
+    "seeds": [
+      42,
+      100,
+      2026
+    ],
+    "n_jobs": 12
+  },
+  "cohorts": {
+    "Astragali_Radix": {
+      "display": "Astragali Radix (Root)",
+      "raw_scans": 403,
+      "qc_scans": 397,
+      "qc_pellets": 80,
+      "dropped": 6,
+      "classes": [
+        "Datong (SX)",
+        "Guyang (IM)",
+        "Qujing (YN)",
+        "Gansu (GS)"
+      ]
+    },
+    "Ziziphi_Spinosae_Semen": {
+      "display": "Ziziphi Spinosae Semen (Seed)",
+      "raw_scans": 500,
+      "qc_scans": 499,
+      "qc_pellets": 100,
+      "dropped": 1,
+      "classes": [
+        "Boxed (HB)",
+        "SJZ/BZ",
+        "Bulk-Bag",
+        "Bulk-50g",
+        "Tongrentang (AH)"
+      ]
+    },
+    "Gastrodia_elata": {
+      "display": "Gastrodia elata (Tuber)",
+      "raw_scans": 405,
+      "qc_scans": 404,
+      "qc_pellets": 82,
+      "dropped": 1,
+      "classes": [
+        "Bozhou (AH)",
+        "Leishan (GZ)",
+        "Changbai (JL)",
+        "Yunnan (YN)"
+      ]
+    },
+    "External_Ginseng_Mendeley": {
+      "doi": "10.17632/hvbp5mdtxx.2",
+      "n_tablets": 42,
+      "n_groups": 6,
+      "freq_range_thz": [
+        0.2,
+        1.6
+      ],
+      "n_freq_pts": 65
+    }
+  },
+  "archived_dl_baselines": {
+    "1D-CNN": {
+      "track": "TrackA",
+      "datasets": {
+        "Astragali_Radix": {
+          "scan_acc_mean": 62.47,
+          "scan_acc_sd": 2.53,
+          "macro_f1_mean": 0.6244,
+          "macro_f1_sd": 0.0262,
+          "pellet_acc_mean": 70.0,
+          "pellet_acc_sd": 4.45,
+          "seed42_pellet_ratio": "59/80",
+          "per_seed": {
+            "42": {
+              "scan_acc": 64.7355,
+              "macro_f1": 0.6482,
+              "pellet_acc": 73.75,
+              "pellet_correct": 59,
+              "pellet_total": 80
+            },
+            "100": {
+              "scan_acc": 58.9421,
+              "macro_f1": 0.5879,
+              "pellet_acc": 63.75,
+              "pellet_correct": 51,
+              "pellet_total": 80
+            },
+            "2026": {
+              "scan_acc": 63.728,
+              "macro_f1": 0.637,
+              "pellet_acc": 72.5,
+              "pellet_correct": 58,
+              "pellet_total": 80
+            }
+          }
+        },
+        "Ziziphi_Spinosae_Semen": {
+          "scan_acc_mean": 79.36,
+          "scan_acc_sd": 1.93,
+          "macro_f1_mean": 0.793,
+          "macro_f1_sd": 0.0208,
+          "pellet_acc_mean": 84.33,
+          "pellet_acc_sd": 2.05,
+          "seed42_pellet_ratio": "84/100",
+          "per_seed": {
+            "42": {
+              "scan_acc": 77.3547,
+              "macro_f1": 0.7746,
+              "pellet_acc": 84.0,
+              "pellet_correct": 84,
+              "pellet_total": 100
+            },
+            "100": {
+              "scan_acc": 81.9639,
+              "macro_f1": 0.822,
+              "pellet_acc": 87.0,
+              "pellet_correct": 87,
+              "pellet_total": 100
+            },
+            "2026": {
+              "scan_acc": 78.7575,
+              "macro_f1": 0.7824,
+              "pellet_acc": 82.0,
+              "pellet_correct": 82,
+              "pellet_total": 100
+            }
+          }
+        },
+        "Gastrodia_elata": {
+          "scan_acc_mean": 79.13,
+          "scan_acc_sd": 1.23,
+          "macro_f1_mean": 0.7872,
+          "macro_f1_sd": 0.0127,
+          "pellet_acc_mean": 78.86,
+          "pellet_acc_sd": 2.07,
+          "seed42_pellet_ratio": "63/82",
+          "per_seed": {
+            "42": {
+              "scan_acc": 77.4752,
+              "macro_f1": 0.7707,
+              "pellet_acc": 76.8293,
+              "pellet_correct": 63,
+              "pellet_total": 82
+            },
+            "100": {
+              "scan_acc": 80.4455,
+              "macro_f1": 0.8017,
+              "pellet_acc": 78.0488,
+              "pellet_correct": 64,
+              "pellet_total": 82
+            },
+            "2026": {
+              "scan_acc": 79.4554,
+              "macro_f1": 0.7893,
+              "pellet_acc": 81.7073,
+              "pellet_correct": 67,
+              "pellet_total": 82
+            }
+          }
+        }
+      },
+      "cross_matrix_mean": {
+        "scan_acc_mean": 73.65,
+        "scan_acc_sd": 0.34,
+        "pellet_acc_mean": 77.73,
+        "pellet_acc_sd": 1.06,
+        "seed42_scan_mean": 73.19,
+        "seed42_pellet_mean": 78.19
+      }
+    },
+    "1D-ResNet": {
+      "track": "TrackA",
+      "datasets": {
+        "Astragali_Radix": {
+          "scan_acc_mean": 61.54,
+          "scan_acc_sd": 5.24,
+          "macro_f1_mean": 0.6137,
+          "macro_f1_sd": 0.0516,
+          "pellet_acc_mean": 67.08,
+          "pellet_acc_sd": 5.62,
+          "seed42_pellet_ratio": "60/80",
+          "per_seed": {
+            "42": {
+              "scan_acc": 68.0101,
+              "macro_f1": 0.6771,
+              "pellet_acc": 75.0,
+              "pellet_correct": 60,
+              "pellet_total": 80
+            },
+            "100": {
+              "scan_acc": 55.1637,
+              "macro_f1": 0.5507,
+              "pellet_acc": 62.5,
+              "pellet_correct": 50,
+              "pellet_total": 80
+            },
+            "2026": {
+              "scan_acc": 61.461,
+              "macro_f1": 0.6133,
+              "pellet_acc": 63.75,
+              "pellet_correct": 51,
+              "pellet_total": 80
+            }
+          }
+        },
+        "Ziziphi_Spinosae_Semen": {
+          "scan_acc_mean": 84.77,
+          "scan_acc_sd": 3.4,
+          "macro_f1_mean": 0.8463,
+          "macro_f1_sd": 0.0359,
+          "pellet_acc_mean": 89.67,
+          "pellet_acc_sd": 4.19,
+          "seed42_pellet_ratio": "94/100",
+          "per_seed": {
+            "42": {
+              "scan_acc": 86.9739,
+              "macro_f1": 0.8693,
+              "pellet_acc": 94.0,
+              "pellet_correct": 94,
+              "pellet_total": 100
+            },
+            "100": {
+              "scan_acc": 87.3747,
+              "macro_f1": 0.874,
+              "pellet_acc": 91.0,
+              "pellet_correct": 91,
+              "pellet_total": 100
+            },
+            "2026": {
+              "scan_acc": 79.9599,
+              "macro_f1": 0.7955,
+              "pellet_acc": 84.0,
+              "pellet_correct": 84,
+              "pellet_total": 100
+            }
+          }
+        },
+        "Gastrodia_elata": {
+          "scan_acc_mean": 82.43,
+          "scan_acc_sd": 3.34,
+          "macro_f1_mean": 0.8252,
+          "macro_f1_sd": 0.0305,
+          "pellet_acc_mean": 84.55,
+          "pellet_acc_sd": 3.5,
+          "seed42_pellet_ratio": "73/82",
+          "per_seed": {
+            "42": {
+              "scan_acc": 85.1485,
+              "macro_f1": 0.851,
+              "pellet_acc": 89.0244,
+              "pellet_correct": 73,
+              "pellet_total": 82
+            },
+            "100": {
+              "scan_acc": 84.4059,
+              "macro_f1": 0.8423,
+              "pellet_acc": 84.1463,
+              "pellet_correct": 69,
+              "pellet_total": 82
+            },
+            "2026": {
+              "scan_acc": 77.7228,
+              "macro_f1": 0.7823,
+              "pellet_acc": 80.4878,
+              "pellet_correct": 66,
+              "pellet_total": 82
+            }
+          }
+        }
+      },
+      "cross_matrix_mean": {
+        "scan_acc_mean": 76.25,
+        "scan_acc_sd": 2.89,
+        "pellet_acc_mean": 80.43,
+        "pellet_acc_sd": 4.14,
+        "seed42_scan_mean": 80.04,
+        "seed42_pellet_mean": 86.01
+      }
+    },
+    "1D-Transformer": {
+      "source": "Colab Compute Worker (ROUND 2A, audited by Master Manuscript Agent)",
+      "repo_head": "dc7f8f7",
+      "model": "1D-Transformer",
+      "track": "TrackA",
+      "device": "Tesla T4",
+      "seeds": [
+        42,
+        100,
+        2026
+      ],
+      "elapsed_sec": 187.38,
+      "peak_gpu_mem_mib": 24.09,
+      "datasets": {
+        "Astragali_Radix": {
+          "scan_acc_mean": 64.74,
+          "scan_acc_sd": 1.44,
+          "macro_f1_mean": 0.6468,
+          "macro_f1_sd": 0.014,
+          "pellet_acc_mean": 70.42,
+          "pellet_acc_sd": 1.56,
+          "seed42_pellet_ratio": "55/80",
+          "per_seed": {
+            "42": {
+              "scan_acc": 62.7204,
+              "macro_f1": 0.6271,
+              "pellet_acc": 68.75,
+              "pellet_correct": 55,
+              "pellet_total": 80
+            },
+            "100": {
+              "scan_acc": 65.995,
+              "macro_f1": 0.6551,
+              "pellet_acc": 72.5,
+              "pellet_correct": 58,
+              "pellet_total": 80
+            },
+            "2026": {
+              "scan_acc": 65.4912,
+              "macro_f1": 0.6582,
+              "pellet_acc": 70.0,
+              "pellet_correct": 56,
+              "pellet_total": 80
+            }
+          }
+        },
+        "Ziziphi_Spinosae_Semen": {
+          "scan_acc_mean": 71.48,
+          "scan_acc_sd": 0.81,
+          "macro_f1_mean": 0.7132,
+          "macro_f1_sd": 0.0073,
+          "pellet_acc_mean": 78.33,
+          "pellet_acc_sd": 0.94,
+          "seed42_pellet_ratio": "79/100",
+          "per_seed": {
+            "42": {
+              "scan_acc": 71.9439,
+              "macro_f1": 0.7129,
+              "pellet_acc": 79.0,
+              "pellet_correct": 79,
+              "pellet_total": 100
+            },
+            "100": {
+              "scan_acc": 70.3407,
+              "macro_f1": 0.7044,
+              "pellet_acc": 79.0,
+              "pellet_correct": 79,
+              "pellet_total": 100
+            },
+            "2026": {
+              "scan_acc": 72.1443,
+              "macro_f1": 0.7222,
+              "pellet_acc": 77.0,
+              "pellet_correct": 77,
+              "pellet_total": 100
+            }
+          }
+        },
+        "Gastrodia_elata": {
+          "scan_acc_mean": 94.06,
+          "scan_acc_sd": 0.4,
+          "macro_f1_mean": 0.9407,
+          "macro_f1_sd": 0.004,
+          "pellet_acc_mean": 97.15,
+          "pellet_acc_sd": 1.15,
+          "seed42_pellet_ratio": "79/82",
+          "per_seed": {
+            "42": {
+              "scan_acc": 94.0594,
+              "macro_f1": 0.9407,
+              "pellet_acc": 96.3415,
+              "pellet_correct": 79,
+              "pellet_total": 82
+            },
+            "100": {
+              "scan_acc": 93.5644,
+              "macro_f1": 0.9358,
+              "pellet_acc": 96.3415,
+              "pellet_correct": 79,
+              "pellet_total": 82
+            },
+            "2026": {
+              "scan_acc": 94.5545,
+              "macro_f1": 0.9456,
+              "pellet_acc": 98.7805,
+              "pellet_correct": 81,
+              "pellet_total": 82
+            }
+          }
+        }
+      },
+      "cross_matrix_mean": {
+        "scan_acc_mean": 76.76,
+        "scan_acc_sd": 0.48,
+        "pellet_acc_mean": 81.97,
+        "pellet_acc_sd": 0.51,
+        "seed42_scan_mean": 76.24,
+        "seed42_pellet_mean": 81.36
+      }
+    },
+    "Dual-View MLP": {
+      "track": "TrackB",
+      "datasets": {
+        "Astragali_Radix": {
+          "scan_acc_mean": 84.8,
+          "scan_acc_sd": 2.6,
+          "macro_f1_mean": 0.8477,
+          "macro_f1_sd": 0.026,
+          "pellet_acc_mean": 89.58,
+          "pellet_acc_sd": 3.12,
+          "seed42_pellet_ratio": "75/80",
+          "per_seed": {
+            "42": {
+              "scan_acc": 88.4131,
+              "macro_f1": 0.8838,
+              "pellet_acc": 93.75,
+              "pellet_correct": 75,
+              "pellet_total": 80
+            },
+            "100": {
+              "scan_acc": 83.6272,
+              "macro_f1": 0.836,
+              "pellet_acc": 88.75,
+              "pellet_correct": 71,
+              "pellet_total": 80
+            },
+            "2026": {
+              "scan_acc": 82.3678,
+              "macro_f1": 0.8233,
+              "pellet_acc": 86.25,
+              "pellet_correct": 69,
+              "pellet_total": 80
+            }
+          }
+        },
+        "Ziziphi_Spinosae_Semen": {
+          "scan_acc_mean": 94.59,
+          "scan_acc_sd": 0.85,
+          "macro_f1_mean": 0.946,
+          "macro_f1_sd": 0.0085,
+          "pellet_acc_mean": 98.0,
+          "pellet_acc_sd": 1.41,
+          "seed42_pellet_ratio": "99/100",
+          "per_seed": {
+            "42": {
+              "scan_acc": 95.1904,
+              "macro_f1": 0.952,
+              "pellet_acc": 99.0,
+              "pellet_correct": 99,
+              "pellet_total": 100
+            },
+            "100": {
+              "scan_acc": 93.3868,
+              "macro_f1": 0.934,
+              "pellet_acc": 96.0,
+              "pellet_correct": 96,
+              "pellet_total": 100
+            },
+            "2026": {
+              "scan_acc": 95.1904,
+              "macro_f1": 0.952,
+              "pellet_acc": 99.0,
+              "pellet_correct": 99,
+              "pellet_total": 100
+            }
+          }
+        },
+        "Gastrodia_elata": {
+          "scan_acc_mean": 96.78,
+          "scan_acc_sd": 0.88,
+          "macro_f1_mean": 0.9679,
+          "macro_f1_sd": 0.0087,
+          "pellet_acc_mean": 97.97,
+          "pellet_acc_sd": 1.15,
+          "seed42_pellet_ratio": "81/82",
+          "per_seed": {
+            "42": {
+              "scan_acc": 97.5248,
+              "macro_f1": 0.9753,
+              "pellet_acc": 98.7805,
+              "pellet_correct": 81,
+              "pellet_total": 82
+            },
+            "100": {
+              "scan_acc": 95.5446,
+              "macro_f1": 0.9557,
+              "pellet_acc": 96.3415,
+              "pellet_correct": 79,
+              "pellet_total": 82
+            },
+            "2026": {
+              "scan_acc": 97.2772,
+              "macro_f1": 0.9728,
+              "pellet_acc": 98.7805,
+              "pellet_correct": 81,
+              "pellet_total": 82
+            }
+          }
+        }
+      },
+      "cross_matrix_mean": {
+        "scan_acc_mean": 92.06,
+        "scan_acc_sd": 1.21,
+        "pellet_acc_mean": 95.18,
+        "pellet_acc_sd": 1.47,
+        "seed42_scan_mean": 93.71,
+        "seed42_pellet_mean": 97.18
+      }
+    }
+  },
+  "benchmarks": {
+    "per_matrix": {
+      "Astragali_Radix": {
+        "TrackA_Raw_PLSDA": {
+          "seed42": {
+            "scan_acc": 84.63,
+            "fold_sd": 4.56,
+            "macro_f1": 0.8461,
+            "pellet_acc": 90.0,
+            "pellet_ratio": "72/80"
+          },
+          "three_seed_scan_mean": 82.95,
+          "three_seed_scan_sd": 1.26,
+          "three_seed_pellet_mean": 88.75,
+          "three_seed_pellet_sd": 1.77,
+          "three_seed_f1_mean": 0.8297
+        },
+        "TrackA_Raw_RF": {
+          "seed42": {
+            "scan_acc": 65.74,
+            "fold_sd": 5.87,
+            "macro_f1": 0.6584,
+            "pellet_acc": 75.0,
+            "pellet_ratio": "60/80"
+          },
+          "three_seed_scan_mean": 65.49,
+          "three_seed_scan_sd": 0.74,
+          "three_seed_pellet_mean": 75.42,
+          "three_seed_pellet_sd": 0.59,
+          "three_seed_f1_mean": 0.6554
+        },
+        "TrackA_Raw_SVM": {
+          "seed42": {
+            "scan_acc": 81.61,
+            "fold_sd": 2.2,
+            "macro_f1": 0.8161,
+            "pellet_acc": 87.5,
+            "pellet_ratio": "70/80"
+          },
+          "three_seed_scan_mean": 80.27,
+          "three_seed_scan_sd": 1.9,
+          "three_seed_pellet_mean": 85.83,
+          "three_seed_pellet_sd": 2.36,
+          "three_seed_f1_mean": 0.803
+        },
+        "TrackB_DualView_PLSDA": {
+          "seed42": {
+            "scan_acc": 83.12,
+            "fold_sd": 3.39,
+            "macro_f1": 0.8322,
+            "pellet_acc": 88.75,
+            "pellet_ratio": "71/80"
+          },
+          "three_seed_scan_mean": 83.04,
+          "three_seed_scan_sd": 0.12,
+          "three_seed_pellet_mean": 90.0,
+          "three_seed_pellet_sd": 1.02,
+          "three_seed_f1_mean": 0.831
+        },
+        "TrackB_DualView_RF": {
+          "seed42": {
+            "scan_acc": 84.89,
+            "fold_sd": 3.74,
+            "macro_f1": 0.8494,
+            "pellet_acc": 90.0,
+            "pellet_ratio": "72/80"
+          },
+          "three_seed_scan_mean": 84.13,
+          "three_seed_scan_sd": 0.62,
+          "three_seed_pellet_mean": 88.33,
+          "three_seed_pellet_sd": 1.56,
+          "three_seed_f1_mean": 0.8421
+        },
+        "TrackB_StrictTF_PLSDA": {
+          "seed42": {
+            "scan_acc": 82.62,
+            "fold_sd": 3.92,
+            "macro_f1": 0.8264,
+            "pellet_acc": 88.75,
+            "pellet_ratio": "71/80"
+          },
+          "three_seed_scan_mean": 82.79,
+          "three_seed_scan_sd": 0.63,
+          "three_seed_pellet_mean": 89.17,
+          "three_seed_pellet_sd": 0.59,
+          "three_seed_f1_mean": 0.8279
+        },
+        "TrackB_StrictTF_RF": {
+          "seed42": {
+            "scan_acc": 83.12,
+            "fold_sd": 5.82,
+            "macro_f1": 0.8326,
+            "pellet_acc": 90.0,
+            "pellet_ratio": "72/80"
+          },
+          "three_seed_scan_mean": 82.03,
+          "three_seed_scan_sd": 1.06,
+          "three_seed_pellet_mean": 86.67,
+          "three_seed_pellet_sd": 2.36,
+          "three_seed_f1_mean": 0.822
+        },
+        "Original_DualView_MCUVE": {
+          "seed42": {
+            "scan_acc": 87.66,
+            "fold_mean": 87.64,
+            "fold_sd": 3.08,
+            "macro_f1": 0.8769,
+            "pellet_acc": 92.5,
+            "pellet_ratio": "74/80",
+            "pellet_macro_f1": 0.9236,
+            "avg_sel_sec_per_fold": 1.23138
+          },
+          "three_seed_scan_mean": 87.49,
+          "three_seed_scan_sd": 0.24,
+          "three_seed_pellet_mean": 92.08,
+          "three_seed_pellet_sd": 0.59,
+          "three_seed_f1_mean": 0.8747,
+          "avg_sel_sec_per_fold": 1.29664
+        },
+        "TIRG_StrictTF_Sup_MCUVE": {
+          "seed42": {
+            "scan_acc": 87.91,
+            "fold_mean": 87.89,
+            "fold_sd": 3.11,
+            "macro_f1": 0.8796,
+            "pellet_acc": 92.5,
+            "pellet_ratio": "74/80",
+            "pellet_macro_f1": 0.9257,
+            "avg_sel_sec_per_fold": 1.0993
+          },
+          "three_seed_scan_mean": 87.91,
+          "three_seed_scan_sd": 0.2,
+          "three_seed_pellet_mean": 91.67,
+          "three_seed_pellet_sd": 0.59,
+          "three_seed_f1_mean": 0.8795,
+          "avg_sel_sec_per_fold": 1.3319
+        },
+        "TIRG_StrictTF_Unsup_R": {
+          "seed42": {
+            "scan_acc": 86.15,
+            "fold_mean": 86.13,
+            "fold_sd": 3.33,
+            "macro_f1": 0.8624,
+            "pellet_acc": 90.0,
+            "pellet_ratio": "72/80",
+            "pellet_macro_f1": 0.8999,
+            "avg_sel_sec_per_fold": 0.01798
+          },
+          "three_seed_scan_mean": 87.41,
+          "three_seed_scan_sd": 0.94,
+          "three_seed_pellet_mean": 91.25,
+          "three_seed_pellet_sd": 1.02,
+          "three_seed_f1_mean": 0.8745,
+          "avg_sel_sec_per_fold": 0.01563
+        }
+      },
+      "Ziziphi_Spinosae_Semen": {
+        "TrackA_Raw_PLSDA": {
+          "seed42": {
+            "scan_acc": 87.37,
+            "fold_sd": 6.52,
+            "macro_f1": 0.8737,
+            "pellet_acc": 94.0,
+            "pellet_ratio": "94/100"
+          },
+          "three_seed_scan_mean": 86.97,
+          "three_seed_scan_sd": 0.57,
+          "three_seed_pellet_mean": 92.67,
+          "three_seed_pellet_sd": 1.89,
+          "three_seed_f1_mean": 0.8698
+        },
+        "TrackA_Raw_RF": {
+          "seed42": {
+            "scan_acc": 73.95,
+            "fold_sd": 6.54,
+            "macro_f1": 0.7399,
+            "pellet_acc": 81.0,
+            "pellet_ratio": "81/100"
+          },
+          "three_seed_scan_mean": 73.21,
+          "three_seed_scan_sd": 0.9,
+          "three_seed_pellet_mean": 80.33,
+          "three_seed_pellet_sd": 0.94,
+          "three_seed_f1_mean": 0.7328
+        },
+        "TrackA_Raw_SVM": {
+          "seed42": {
+            "scan_acc": 84.77,
+            "fold_sd": 4.68,
+            "macro_f1": 0.8476,
+            "pellet_acc": 92.0,
+            "pellet_ratio": "92/100"
+          },
+          "three_seed_scan_mean": 85.1,
+          "three_seed_scan_sd": 1.09,
+          "three_seed_pellet_mean": 91.33,
+          "three_seed_pellet_sd": 1.7,
+          "three_seed_f1_mean": 0.8514
+        },
+        "TrackB_DualView_PLSDA": {
+          "seed42": {
+            "scan_acc": 91.18,
+            "fold_sd": 4.48,
+            "macro_f1": 0.9117,
+            "pellet_acc": 97.0,
+            "pellet_ratio": "97/100"
+          },
+          "three_seed_scan_mean": 91.11,
+          "three_seed_scan_sd": 0.25,
+          "three_seed_pellet_mean": 96.33,
+          "three_seed_pellet_sd": 0.47,
+          "three_seed_f1_mean": 0.9111
+        },
+        "TrackB_DualView_RF": {
+          "seed42": {
+            "scan_acc": 90.38,
+            "fold_sd": 4.62,
+            "macro_f1": 0.9038,
+            "pellet_acc": 90.0,
+            "pellet_ratio": "90/100"
+          },
+          "three_seed_scan_mean": 89.38,
+          "three_seed_scan_sd": 0.71,
+          "three_seed_pellet_mean": 90.0,
+          "three_seed_pellet_sd": 0.82,
+          "three_seed_f1_mean": 0.8938
+        },
+        "TrackB_StrictTF_PLSDA": {
+          "seed42": {
+            "scan_acc": 91.58,
+            "fold_sd": 3.66,
+            "macro_f1": 0.916,
+            "pellet_acc": 97.0,
+            "pellet_ratio": "97/100"
+          },
+          "three_seed_scan_mean": 90.38,
+          "three_seed_scan_sd": 1.07,
+          "three_seed_pellet_mean": 96.0,
+          "three_seed_pellet_sd": 0.82,
+          "three_seed_f1_mean": 0.9039
+        },
+        "TrackB_StrictTF_RF": {
+          "seed42": {
+            "scan_acc": 91.98,
+            "fold_sd": 3.46,
+            "macro_f1": 0.9198,
+            "pellet_acc": 97.0,
+            "pellet_ratio": "97/100"
+          },
+          "three_seed_scan_mean": 91.05,
+          "three_seed_scan_sd": 0.68,
+          "three_seed_pellet_mean": 96.0,
+          "three_seed_pellet_sd": 0.82,
+          "three_seed_f1_mean": 0.9105
+        },
+        "Original_DualView_MCUVE": {
+          "seed42": {
+            "scan_acc": 96.39,
+            "fold_mean": 96.4,
+            "fold_sd": 2.33,
+            "macro_f1": 0.964,
+            "pellet_acc": 100.0,
+            "pellet_ratio": "100/100",
+            "pellet_macro_f1": 1.0,
+            "avg_sel_sec_per_fold": 1.54874
+          },
+          "three_seed_scan_mean": 95.26,
+          "three_seed_scan_sd": 1.46,
+          "three_seed_pellet_mean": 97.67,
+          "three_seed_pellet_sd": 2.05,
+          "three_seed_f1_mean": 0.9526,
+          "avg_sel_sec_per_fold": 1.65665
+        },
+        "TIRG_StrictTF_Sup_MCUVE": {
+          "seed42": {
+            "scan_acc": 95.79,
+            "fold_mean": 95.8,
+            "fold_sd": 3.19,
+            "macro_f1": 0.958,
+            "pellet_acc": 99.0,
+            "pellet_ratio": "99/100",
+            "pellet_macro_f1": 0.99,
+            "avg_sel_sec_per_fold": 1.77163
+          },
+          "three_seed_scan_mean": 95.92,
+          "three_seed_scan_sd": 0.09,
+          "three_seed_pellet_mean": 98.67,
+          "three_seed_pellet_sd": 0.47,
+          "three_seed_f1_mean": 0.9593,
+          "avg_sel_sec_per_fold": 1.85069
+        },
+        "TIRG_StrictTF_Unsup_R": {
+          "seed42": {
+            "scan_acc": 96.19,
+            "fold_mean": 96.2,
+            "fold_sd": 2.4,
+            "macro_f1": 0.962,
+            "pellet_acc": 100.0,
+            "pellet_ratio": "100/100",
+            "pellet_macro_f1": 1.0,
+            "avg_sel_sec_per_fold": 0.01689
+          },
+          "three_seed_scan_mean": 95.79,
+          "three_seed_scan_sd": 0.43,
+          "three_seed_pellet_mean": 98.67,
+          "three_seed_pellet_sd": 1.25,
+          "three_seed_f1_mean": 0.958,
+          "avg_sel_sec_per_fold": 0.01622
+        }
+      },
+      "Gastrodia_elata": {
+        "TrackA_Raw_PLSDA": {
+          "seed42": {
+            "scan_acc": 99.01,
+            "fold_sd": 1.22,
+            "macro_f1": 0.9901,
+            "pellet_acc": 100.0,
+            "pellet_ratio": "82/82"
+          },
+          "three_seed_scan_mean": 98.76,
+          "three_seed_scan_sd": 0.54,
+          "three_seed_pellet_mean": 99.59,
+          "three_seed_pellet_sd": 0.58,
+          "three_seed_f1_mean": 0.9876
+        },
+        "TrackA_Raw_RF": {
+          "seed42": {
+            "scan_acc": 88.37,
+            "fold_sd": 4.96,
+            "macro_f1": 0.8818,
+            "pellet_acc": 91.46,
+            "pellet_ratio": "75/82"
+          },
+          "three_seed_scan_mean": 89.27,
+          "three_seed_scan_sd": 0.65,
+          "three_seed_pellet_mean": 94.31,
+          "three_seed_pellet_sd": 2.07,
+          "three_seed_f1_mean": 0.892
+        },
+        "TrackA_Raw_SVM": {
+          "seed42": {
+            "scan_acc": 95.79,
+            "fold_sd": 3.28,
+            "macro_f1": 0.9579,
+            "pellet_acc": 97.56,
+            "pellet_ratio": "80/82"
+          },
+          "three_seed_scan_mean": 96.62,
+          "three_seed_scan_sd": 1.0,
+          "three_seed_pellet_mean": 98.78,
+          "three_seed_pellet_sd": 1.0,
+          "three_seed_f1_mean": 0.9662
+        },
+        "TrackB_DualView_PLSDA": {
+          "seed42": {
+            "scan_acc": 97.77,
+            "fold_sd": 2.09,
+            "macro_f1": 0.9776,
+            "pellet_acc": 98.78,
+            "pellet_ratio": "81/82"
+          },
+          "three_seed_scan_mean": 98.1,
+          "three_seed_scan_sd": 0.47,
+          "three_seed_pellet_mean": 99.59,
+          "three_seed_pellet_sd": 0.58,
+          "three_seed_f1_mean": 0.981
+        },
+        "TrackB_DualView_RF": {
+          "seed42": {
+            "scan_acc": 97.28,
+            "fold_sd": 1.22,
+            "macro_f1": 0.9728,
+            "pellet_acc": 100.0,
+            "pellet_ratio": "82/82"
+          },
+          "three_seed_scan_mean": 97.11,
+          "three_seed_scan_sd": 0.24,
+          "three_seed_pellet_mean": 100.0,
+          "three_seed_pellet_sd": 0.0,
+          "three_seed_f1_mean": 0.9712
+        },
+        "TrackB_StrictTF_PLSDA": {
+          "seed42": {
+            "scan_acc": 98.51,
+            "fold_sd": 1.79,
+            "macro_f1": 0.9852,
+            "pellet_acc": 98.78,
+            "pellet_ratio": "81/82"
+          },
+          "three_seed_scan_mean": 97.61,
+          "three_seed_scan_sd": 0.65,
+          "three_seed_pellet_mean": 99.19,
+          "three_seed_pellet_sd": 0.58,
+          "three_seed_f1_mean": 0.9761
+        },
+        "TrackB_StrictTF_RF": {
+          "seed42": {
+            "scan_acc": 97.77,
+            "fold_sd": 0.94,
+            "macro_f1": 0.9778,
+            "pellet_acc": 100.0,
+            "pellet_ratio": "82/82"
+          },
+          "three_seed_scan_mean": 97.44,
+          "three_seed_scan_sd": 0.31,
+          "three_seed_pellet_mean": 100.0,
+          "three_seed_pellet_sd": 0.0,
+          "three_seed_f1_mean": 0.9745
+        },
+        "Original_DualView_MCUVE": {
+          "seed42": {
+            "scan_acc": 98.51,
+            "fold_mean": 98.51,
+            "fold_sd": 0.51,
+            "macro_f1": 0.9852,
+            "pellet_acc": 100.0,
+            "pellet_ratio": "82/82",
+            "pellet_macro_f1": 1.0,
+            "avg_sel_sec_per_fold": 0.93146
+          },
+          "three_seed_scan_mean": 98.51,
+          "three_seed_scan_sd": 0.81,
+          "three_seed_pellet_mean": 99.59,
+          "three_seed_pellet_sd": 0.58,
+          "three_seed_f1_mean": 0.9852,
+          "avg_sel_sec_per_fold": 1.00315
+        },
+        "TIRG_StrictTF_Sup_MCUVE": {
+          "seed42": {
+            "scan_acc": 99.5,
+            "fold_mean": 99.5,
+            "fold_sd": 0.61,
+            "macro_f1": 0.9951,
+            "pellet_acc": 100.0,
+            "pellet_ratio": "82/82",
+            "pellet_macro_f1": 1.0,
+            "avg_sel_sec_per_fold": 0.98169
+          },
+          "three_seed_scan_mean": 99.5,
+          "three_seed_scan_sd": 0.2,
+          "three_seed_pellet_mean": 100.0,
+          "three_seed_pellet_sd": 0.0,
+          "three_seed_f1_mean": 0.9951,
+          "avg_sel_sec_per_fold": 0.89648
+        },
+        "TIRG_StrictTF_Unsup_R": {
+          "seed42": {
+            "scan_acc": 99.75,
+            "fold_mean": 99.75,
+            "fold_sd": 0.5,
+            "macro_f1": 0.9975,
+            "pellet_acc": 100.0,
+            "pellet_ratio": "82/82",
+            "pellet_macro_f1": 1.0,
+            "avg_sel_sec_per_fold": 0.01279
+          },
+          "three_seed_scan_mean": 99.75,
+          "three_seed_scan_sd": 0.0,
+          "three_seed_pellet_mean": 100.0,
+          "three_seed_pellet_sd": 0.0,
+          "three_seed_f1_mean": 0.9975,
+          "avg_sel_sec_per_fold": 0.01439
+        }
+      }
+    },
+    "cross_matrix_avg": {
+      "TrackA_Raw_PLSDA": {
+        "seed42_scan_mean": 90.34,
+        "seed42_pellet_mean": 94.67,
+        "three_seed_scan_mean": 89.56,
+        "three_seed_pellet_mean": 93.67
+      },
+      "TrackA_Raw_RF": {
+        "seed42_scan_mean": 76.02,
+        "seed42_pellet_mean": 82.49,
+        "three_seed_scan_mean": 75.99,
+        "three_seed_pellet_mean": 83.35
+      },
+      "TrackA_Raw_SVM": {
+        "seed42_scan_mean": 87.39,
+        "seed42_pellet_mean": 92.35,
+        "three_seed_scan_mean": 87.33,
+        "three_seed_pellet_mean": 91.98
+      },
+      "TrackB_DualView_PLSDA": {
+        "seed42_scan_mean": 90.69,
+        "seed42_pellet_mean": 94.84,
+        "three_seed_scan_mean": 90.75,
+        "three_seed_pellet_mean": 95.31
+      },
+      "TrackB_DualView_RF": {
+        "seed42_scan_mean": 90.85,
+        "seed42_pellet_mean": 93.33,
+        "three_seed_scan_mean": 90.21,
+        "three_seed_pellet_mean": 92.78
+      },
+      "TrackB_StrictTF_PLSDA": {
+        "seed42_scan_mean": 90.9,
+        "seed42_pellet_mean": 94.84,
+        "three_seed_scan_mean": 90.26,
+        "three_seed_pellet_mean": 94.79
+      },
+      "TrackB_StrictTF_RF": {
+        "seed42_scan_mean": 90.96,
+        "seed42_pellet_mean": 95.67,
+        "three_seed_scan_mean": 90.17,
+        "three_seed_pellet_mean": 94.22
+      },
+      "Original_DualView_MCUVE": {
+        "seed42_scan_mean": 94.19,
+        "seed42_pellet_mean": 97.5,
+        "three_seed_scan_mean": 93.75,
+        "three_seed_pellet_mean": 96.45,
+        "avg_sel_sec_per_fold": 1.31881
+      },
+      "TIRG_StrictTF_Sup_MCUVE": {
+        "seed42_scan_mean": 94.4,
+        "seed42_pellet_mean": 97.17,
+        "three_seed_scan_mean": 94.44,
+        "three_seed_pellet_mean": 96.78,
+        "avg_sel_sec_per_fold": 1.35969
+      },
+      "TIRG_StrictTF_Unsup_R": {
+        "seed42_scan_mean": 94.03,
+        "seed42_pellet_mean": 96.67,
+        "three_seed_scan_mean": 94.32,
+        "three_seed_pellet_mean": 96.64,
+        "avg_sel_sec_per_fold": 0.01541
+      },
+      "unsup_r_speedup_vs_mcuve_on_strict_tf": 88.2
+    }
+  },
+  "paired_cluster_bootstrap": {
+    "Astragali_Radix": {
+      "TIRG_StrictTF_Unsup_R": {
+        "TrackA_Raw_PLSDA": {
+          "delta_acc": 1.51,
+          "ci95_lo": -2.77,
+          "ci95_hi": 6.03,
+          "p_boot": 0.524
+        },
+        "TrackA_Raw_SVM": {
+          "delta_acc": 4.53,
+          "ci95_lo": 0.76,
+          "ci95_hi": 8.08,
+          "p_boot": 0.028
+        },
+        "TrackB_DualView_PLSDA": {
+          "delta_acc": 3.02,
+          "ci95_lo": -1.02,
+          "ci95_hi": 7.25,
+          "p_boot": 0.164
+        },
+        "TrackB_StrictTF_PLSDA": {
+          "delta_acc": 3.53,
+          "ci95_lo": -0.76,
+          "ci95_hi": 8.0,
+          "p_boot": 0.121
+        },
+        "TrackB_DualView_RF": {
+          "delta_acc": 1.26,
+          "ci95_lo": -2.01,
+          "ci95_hi": 4.55,
+          "p_boot": 0.489
+        },
+        "Original_DualView_MCUVE": {
+          "delta_acc": -1.51,
+          "ci95_lo": -4.55,
+          "ci95_hi": 1.5,
+          "p_boot": 0.342
+        }
+      },
+      "TIRG_StrictTF_Sup_MCUVE": {
+        "TrackA_Raw_PLSDA": {
+          "delta_acc": 3.27,
+          "ci95_lo": -0.75,
+          "ci95_hi": 7.34,
+          "p_boot": 0.106
+        },
+        "TrackA_Raw_SVM": {
+          "delta_acc": 6.3,
+          "ci95_lo": 2.28,
+          "ci95_hi": 10.25,
+          "p_boot": 0.002
+        },
+        "TrackB_DualView_PLSDA": {
+          "delta_acc": 4.79,
+          "ci95_lo": 1.27,
+          "ci95_hi": 8.25,
+          "p_boot": 0.007
+        },
+        "TrackB_StrictTF_PLSDA": {
+          "delta_acc": 5.29,
+          "ci95_lo": 1.51,
+          "ci95_hi": 9.05,
+          "p_boot": 0.005
+        },
+        "TrackB_DualView_RF": {
+          "delta_acc": 3.02,
+          "ci95_lo": 0.25,
+          "ci95_hi": 5.79,
+          "p_boot": 0.042
+        },
+        "Original_DualView_MCUVE": {
+          "delta_acc": 0.25,
+          "ci95_lo": -2.54,
+          "ci95_hi": 2.78,
+          "p_boot": 0.941
+        }
+      }
+    },
+    "Ziziphi_Spinosae_Semen": {
+      "TIRG_StrictTF_Unsup_R": {
+        "TrackA_Raw_PLSDA": {
+          "delta_acc": 8.82,
+          "ci95_lo": 5.22,
+          "ci95_hi": 13.03,
+          "p_boot": 0.0005
+        },
+        "TrackA_Raw_SVM": {
+          "delta_acc": 11.42,
+          "ci95_lo": 7.8,
+          "ci95_hi": 15.4,
+          "p_boot": 0.0005
+        },
+        "TrackB_DualView_PLSDA": {
+          "delta_acc": 5.01,
+          "ci95_lo": 2.2,
+          "ci95_hi": 8.4,
+          "p_boot": 0.0005
+        },
+        "TrackB_StrictTF_PLSDA": {
+          "delta_acc": 4.61,
+          "ci95_lo": 1.8,
+          "ci95_hi": 7.82,
+          "p_boot": 0.001
+        },
+        "TrackB_DualView_RF": {
+          "delta_acc": 5.81,
+          "ci95_lo": 2.82,
+          "ci95_hi": 9.0,
+          "p_boot": 0.0005
+        },
+        "Original_DualView_MCUVE": {
+          "delta_acc": -0.2,
+          "ci95_lo": -2.2,
+          "ci95_hi": 1.61,
+          "p_boot": 0.943
+        }
+      },
+      "TIRG_StrictTF_Sup_MCUVE": {
+        "TrackA_Raw_PLSDA": {
+          "delta_acc": 8.42,
+          "ci95_lo": 5.01,
+          "ci95_hi": 12.22,
+          "p_boot": 0.0005
+        },
+        "TrackA_Raw_SVM": {
+          "delta_acc": 11.02,
+          "ci95_lo": 7.6,
+          "ci95_hi": 14.66,
+          "p_boot": 0.0005
+        },
+        "TrackB_DualView_PLSDA": {
+          "delta_acc": 4.61,
+          "ci95_lo": 2.0,
+          "ci95_hi": 7.8,
+          "p_boot": 0.001
+        },
+        "TrackB_StrictTF_PLSDA": {
+          "delta_acc": 4.21,
+          "ci95_lo": 1.4,
+          "ci95_hi": 7.03,
+          "p_boot": 0.002
+        },
+        "TrackB_DualView_RF": {
+          "delta_acc": 5.41,
+          "ci95_lo": 2.41,
+          "ci95_hi": 8.64,
+          "p_boot": 0.0005
+        },
+        "Original_DualView_MCUVE": {
+          "delta_acc": -0.6,
+          "ci95_lo": -2.61,
+          "ci95_hi": 1.4,
+          "p_boot": 0.613
+        }
+      }
+    },
+    "Gastrodia_elata": {
+      "TIRG_StrictTF_Unsup_R": {
+        "TrackA_Raw_PLSDA": {
+          "delta_acc": 0.74,
+          "ci95_lo": -0.25,
+          "ci95_hi": 2.23,
+          "p_boot": 0.352
+        },
+        "TrackA_Raw_SVM": {
+          "delta_acc": 3.96,
+          "ci95_lo": 0.98,
+          "ci95_hi": 7.92,
+          "p_boot": 0.003
+        },
+        "TrackB_DualView_PLSDA": {
+          "delta_acc": 1.98,
+          "ci95_lo": 0.25,
+          "ci95_hi": 4.67,
+          "p_boot": 0.01
+        },
+        "TrackB_StrictTF_PLSDA": {
+          "delta_acc": 1.24,
+          "ci95_lo": 0.0,
+          "ci95_hi": 2.98,
+          "p_boot": 0.088
+        },
+        "TrackB_DualView_RF": {
+          "delta_acc": 2.48,
+          "ci95_lo": 0.98,
+          "ci95_hi": 4.48,
+          "p_boot": 0.001
+        },
+        "Original_DualView_MCUVE": {
+          "delta_acc": 1.24,
+          "ci95_lo": 0.25,
+          "ci95_hi": 2.71,
+          "p_boot": 0.034
+        }
+      },
+      "TIRG_StrictTF_Sup_MCUVE": {
+        "TrackA_Raw_PLSDA": {
+          "delta_acc": 0.5,
+          "ci95_lo": -0.74,
+          "ci95_hi": 2.0,
+          "p_boot": 0.612
+        },
+        "TrackA_Raw_SVM": {
+          "delta_acc": 3.71,
+          "ci95_lo": 0.73,
+          "ci95_hi": 7.67,
+          "p_boot": 0.017
+        },
+        "TrackB_DualView_PLSDA": {
+          "delta_acc": 1.73,
+          "ci95_lo": 0.0,
+          "ci95_hi": 4.25,
+          "p_boot": 0.101
+        },
+        "TrackB_StrictTF_PLSDA": {
+          "delta_acc": 0.99,
+          "ci95_lo": -0.25,
+          "ci95_hi": 2.78,
+          "p_boot": 0.314
+        },
+        "TrackB_DualView_RF": {
+          "delta_acc": 2.23,
+          "ci95_lo": 0.74,
+          "ci95_hi": 4.19,
+          "p_boot": 0.001
+        },
+        "Original_DualView_MCUVE": {
+          "delta_acc": 0.99,
+          "ci95_lo": -0.25,
+          "ci95_hi": 2.48,
+          "p_boot": 0.184
+        }
+      }
+    }
+  },
+  "thickness_stress_test": {
+    "Astragali_Radix": {
+      "Original_DualView_MCUVE": {
+        "clean_acc": 87.66,
+        "S1_test10pct_mean": 76.32,
+        "S1_drop": -11.34,
+        "S2_all15pct_mean": 85.06,
+        "S2_drop": -2.6
+      },
+      "SNV_Only_MCUVE": {
+        "clean_acc": 86.65,
+        "S1_test10pct_mean": 86.65,
+        "S1_drop": -0.0,
+        "S2_all15pct_mean": 87.15,
+        "S2_drop": 0.5
+      },
+      "Pure_rhoTF_MCUVE": {
+        "clean_acc": 83.12,
+        "S1_test10pct_mean": 83.12,
+        "S1_drop": 0.0,
+        "S2_all15pct_mean": 81.86,
+        "S2_drop": -1.26
+      },
+      "TIRG_StrictTF_Sup_MCUVE": {
+        "clean_acc": 87.91,
+        "S1_test10pct_mean": 87.91,
+        "S1_drop": -0.0,
+        "S2_all15pct_mean": 88.66,
+        "S2_drop": 0.75
+      },
+      "TIRG_StrictTF_Unsup_R": {
+        "clean_acc": 86.15,
+        "S1_test10pct_mean": 86.15,
+        "S1_drop": -0.0,
+        "S2_all15pct_mean": 86.15,
+        "S2_drop": 0.0
+      }
+    },
+    "Ziziphi_Spinosae_Semen": {
+      "Original_DualView_MCUVE": {
+        "clean_acc": 96.39,
+        "S1_test10pct_mean": 85.81,
+        "S1_drop": -10.58,
+        "S2_all15pct_mean": 92.92,
+        "S2_drop": -3.47
+      },
+      "SNV_Only_MCUVE": {
+        "clean_acc": 91.98,
+        "S1_test10pct_mean": 91.98,
+        "S1_drop": 0.0,
+        "S2_all15pct_mean": 90.98,
+        "S2_drop": -1.0
+      },
+      "Pure_rhoTF_MCUVE": {
+        "clean_acc": 95.19,
+        "S1_test10pct_mean": 95.19,
+        "S1_drop": 0.0,
+        "S2_all15pct_mean": 96.19,
+        "S2_drop": 1.0
+      },
+      "TIRG_StrictTF_Sup_MCUVE": {
+        "clean_acc": 95.79,
+        "S1_test10pct_mean": 95.79,
+        "S1_drop": 0.0,
+        "S2_all15pct_mean": 95.99,
+        "S2_drop": 0.2
+      },
+      "TIRG_StrictTF_Unsup_R": {
+        "clean_acc": 96.19,
+        "S1_test10pct_mean": 96.19,
+        "S1_drop": 0.0,
+        "S2_all15pct_mean": 96.19,
+        "S2_drop": 0.0
+      }
+    },
+    "Gastrodia_elata": {
+      "Original_DualView_MCUVE": {
+        "clean_acc": 98.51,
+        "S1_test10pct_mean": 95.89,
+        "S1_drop": -2.62,
+        "S2_all15pct_mean": 98.84,
+        "S2_drop": 0.33
+      },
+      "SNV_Only_MCUVE": {
+        "clean_acc": 98.27,
+        "S1_test10pct_mean": 98.27,
+        "S1_drop": -0.0,
+        "S2_all15pct_mean": 98.27,
+        "S2_drop": 0.0
+      },
+      "Pure_rhoTF_MCUVE": {
+        "clean_acc": 99.5,
+        "S1_test10pct_mean": 99.5,
+        "S1_drop": 0.0,
+        "S2_all15pct_mean": 98.76,
+        "S2_drop": -0.74
+      },
+      "TIRG_StrictTF_Sup_MCUVE": {
+        "clean_acc": 99.5,
+        "S1_test10pct_mean": 99.5,
+        "S1_drop": 0.0,
+        "S2_all15pct_mean": 99.01,
+        "S2_drop": -0.49
+      },
+      "TIRG_StrictTF_Unsup_R": {
+        "clean_acc": 99.75,
+        "S1_test10pct_mean": 99.75,
+        "S1_drop": 0.0,
+        "S2_all15pct_mean": 99.75,
+        "S2_drop": 0.0
+      }
+    }
+  },
+  "leakage_audit": {
+    "audit1_differential_probe": {
+      "max_X_diff": 0.0,
+      "max_R_diff": 0.0,
+      "max_Z_diff": 0.0,
+      "pred_flips": 0,
+      "status": "PASS"
+    },
+    "audit2_raw_vs_qc": {
+      "Astragali_Radix": {
+        "raw_n": 403,
+        "raw_scan_acc": 86.6,
+        "raw_pellet_acc": 90.12,
+        "qc_n": 397,
+        "qc_scan_acc": 86.15,
+        "qc_pellet_acc": 90.0
+      },
+      "Ziziphi_Spinosae_Semen": {
+        "raw_n": 500,
+        "raw_scan_acc": 95.2,
+        "raw_pellet_acc": 97.0,
+        "qc_n": 499,
+        "qc_scan_acc": 96.19,
+        "qc_pellet_acc": 100.0
+      },
+      "Gastrodia_elata": {
+        "raw_n": 405,
+        "raw_scan_acc": 99.01,
+        "raw_pellet_acc": 100.0,
+        "qc_n": 404,
+        "qc_scan_acc": 99.75,
+        "qc_pellet_acc": 100.0
+      }
+    },
+    "audit3_grouped_vs_random": {
+      "Astragali_Radix": {
+        "pellet_grouped_scan_acc": 86.15,
+        "ungrouped_random_scan_acc": 93.45,
+        "optimism_gap_pct": 7.3
+      },
+      "Ziziphi_Spinosae_Semen": {
+        "pellet_grouped_scan_acc": 96.19,
+        "ungrouped_random_scan_acc": 98.0,
+        "optimism_gap_pct": 1.81
+      },
+      "Gastrodia_elata": {
+        "pellet_grouped_scan_acc": 99.75,
+        "ungrouped_random_scan_acc": 99.26,
+        "optimism_gap_pct": -0.49
+      }
+    },
+    "audit4_y_scrambling_500": {
+      "Astragali_Radix": {
+        "n_perm": 500,
+        "obs_acc": 86.15,
+        "chance_pct": 25.0,
+        "null_mean": 24.93,
+        "null_sd": 4.05,
+        "null_min": 12.59,
+        "null_max": 38.29,
+        "n_ge_obs": 0,
+        "empirical_p": 0.002
+      },
+      "Ziziphi_Spinosae_Semen": {
+        "n_perm": 500,
+        "obs_acc": 96.19,
+        "chance_pct": 20.0,
+        "null_mean": 20.2,
+        "null_sd": 3.45,
+        "null_min": 11.02,
+        "null_max": 33.27,
+        "n_ge_obs": 0,
+        "empirical_p": 0.002
+      },
+      "Gastrodia_elata": {
+        "n_perm": 500,
+        "obs_acc": 99.75,
+        "chance_pct": 25.0,
+        "null_mean": 24.86,
+        "null_sd": 4.35,
+        "null_min": 12.13,
+        "null_max": 38.61,
+        "n_ge_obs": 0,
+        "empirical_p": 0.002
+      }
+    }
+  },
+  "deployment_reliability": {
+    "Astragali_Radix": {
+      "C1_real_corrupted_auroc": {
+        "T2": 0.9622,
+        "Q_res": 0.9954,
+        "U_prob": 0.9547,
+        "Q+U_prob": 0.9954,
+        "T2+Q": 0.995
+      },
+      "C2_unseen_origin_scan_auroc": {
+        "T2": 0.3442,
+        "Q_res": 0.6498,
+        "U_prob": 0.8017,
+        "Q+U_prob": 0.7281,
+        "T2+Q+U_prob": 0.6611
+      },
+      "C2_unseen_origin_pellet_auroc": {
+        "T2": 0.3205,
+        "Q_res": 0.6814,
+        "U_prob": 0.8329,
+        "Q+U_prob": 0.7598,
+        "T2+Q+U_prob": 0.6897
+      },
+      "NonEmpty_Split_Conformal": {
+        "alpha=0.10": {
+          "sample_coverage_pct": 91.94,
+          "sample_avg_set_size": 1.32,
+          "sample_singleton_rate_pct": 77.08,
+          "sample_singleton_acc_pct": 91.18,
+          "pellet_coverage_pct": 95.0,
+          "pellet_avg_set_size": 1.55,
+          "pellet_singleton_rate_pct": 68.75,
+          "pellet_singleton_acc_pct": 94.55
+        },
+        "alpha=0.05": {
+          "sample_coverage_pct": 93.7,
+          "sample_avg_set_size": 1.61,
+          "sample_singleton_rate_pct": 64.23,
+          "sample_singleton_acc_pct": 93.73,
+          "pellet_coverage_pct": 95.0,
+          "pellet_avg_set_size": 1.55,
+          "pellet_singleton_rate_pct": 68.75,
+          "pellet_singleton_acc_pct": 94.55
+        }
+      }
+    },
+    "Ziziphi_Spinosae_Semen": {
+      "C1_real_corrupted_auroc": {
+        "T2": 0.998,
+        "Q_res": 0.998,
+        "U_prob": 0.992,
+        "Q+U_prob": 0.998,
+        "T2+Q": 0.998
+      },
+      "C2_unseen_origin_scan_auroc": {
+        "T2": 0.4132,
+        "Q_res": 0.6919,
+        "U_prob": 0.9,
+        "Q+U_prob": 0.8185,
+        "T2+Q+U_prob": 0.7419
+      },
+      "C2_unseen_origin_pellet_auroc": {
+        "T2": 0.4046,
+        "Q_res": 0.7185,
+        "U_prob": 0.9483,
+        "Q+U_prob": 0.8594,
+        "T2+Q+U_prob": 0.7638
+      },
+      "NonEmpty_Split_Conformal": {
+        "alpha=0.10": {
+          "sample_coverage_pct": 95.99,
+          "sample_avg_set_size": 1.0,
+          "sample_singleton_rate_pct": 100.0,
+          "sample_singleton_acc_pct": 95.99,
+          "pellet_coverage_pct": 100.0,
+          "pellet_avg_set_size": 1.0,
+          "pellet_singleton_rate_pct": 100.0,
+          "pellet_singleton_acc_pct": 100.0
+        },
+        "alpha=0.05": {
+          "sample_coverage_pct": 96.39,
+          "sample_avg_set_size": 1.03,
+          "sample_singleton_rate_pct": 97.39,
+          "sample_singleton_acc_pct": 96.3,
+          "pellet_coverage_pct": 100.0,
+          "pellet_avg_set_size": 1.0,
+          "pellet_singleton_rate_pct": 100.0,
+          "pellet_singleton_acc_pct": 100.0
+        }
+      }
+    },
+    "Gastrodia_elata": {
+      "C1_real_corrupted_auroc": {
+        "T2": 1.0,
+        "Q_res": 1.0,
+        "U_prob": 1.0,
+        "Q+U_prob": 1.0,
+        "T2+Q": 1.0
+      },
+      "C2_unseen_origin_scan_auroc": {
+        "T2": 0.484,
+        "Q_res": 0.8782,
+        "U_prob": 0.8138,
+        "Q+U_prob": 0.8846,
+        "T2+Q+U_prob": 0.874
+      },
+      "C2_unseen_origin_pellet_auroc": {
+        "T2": 0.4701,
+        "Q_res": 0.877,
+        "U_prob": 0.8208,
+        "Q+U_prob": 0.8815,
+        "T2+Q+U_prob": 0.874
+      },
+      "NonEmpty_Split_Conformal": {
+        "alpha=0.10": {
+          "sample_coverage_pct": 99.5,
+          "sample_avg_set_size": 1.0,
+          "sample_singleton_rate_pct": 100.0,
+          "sample_singleton_acc_pct": 99.5,
+          "pellet_coverage_pct": 100.0,
+          "pellet_avg_set_size": 1.0,
+          "pellet_singleton_rate_pct": 100.0,
+          "pellet_singleton_acc_pct": 100.0
+        },
+        "alpha=0.05": {
+          "sample_coverage_pct": 99.5,
+          "sample_avg_set_size": 1.0,
+          "sample_singleton_rate_pct": 100.0,
+          "sample_singleton_acc_pct": 99.5,
+          "pellet_coverage_pct": 100.0,
+          "pellet_avg_set_size": 1.0,
+          "pellet_singleton_rate_pct": 100.0,
+          "pellet_singleton_acc_pct": 100.0
+        }
+      }
+    },
+    "External_Ginseng_Mendeley": {
+      "LOGO_classification": {
+        "TrackA_Raw_SVM": {
+          "scan_acc": 47.62,
+          "fold_sd": 10.65,
+          "macro_f1": 0.4714,
+          "pellet_acc": 50.0,
+          "pellet_ratio": "3/6"
+        },
+        "TrackB_StrictTF_PLSDA": {
+          "scan_acc": 54.76,
+          "fold_sd": 9.82,
+          "macro_f1": 0.5474,
+          "pellet_acc": 50.0,
+          "pellet_ratio": "3/6"
+        },
+        "Original_DualView": {
+          "scan_acc": 50.0,
+          "fold_mean": 50.0,
+          "fold_sd": 10.91,
+          "macro_f1": 0.4928,
+          "pellet_acc": 33.33,
+          "pellet_ratio": "2/6",
+          "pellet_macro_f1": 0.25,
+          "avg_sel_sec_per_fold": 0.0244
+        },
+        "TIRG_StrictTF_MCUVE": {
+          "scan_acc": 50.0,
+          "fold_mean": 50.0,
+          "fold_sd": 17.98,
+          "macro_f1": 0.4997,
+          "pellet_acc": 66.67,
+          "pellet_ratio": "4/6",
+          "pellet_macro_f1": 0.4,
+          "avg_sel_sec_per_fold": 0.02117
+        }
+      },
+      "NonEmpty_Split_Conformal": {
+        "alpha=0.10": {
+          "sample_coverage_pct": 92.86,
+          "sample_avg_set_size": 1.79,
+          "sample_singleton_rate_pct": 21.43,
+          "sample_singleton_acc_pct": 66.67
+        },
+        "alpha=0.05": {
+          "sample_coverage_pct": 92.86,
+          "sample_avg_set_size": 1.79,
+          "sample_singleton_rate_pct": 21.43,
+          "sample_singleton_acc_pct": 66.67
+        }
+      }
+    }
+  },
+  "total_elapsed_sec": 2377.71,
+  "physics_stress_v21": {
+    "per_matrix": {
+      "Astragali_Radix": {
+        "AmpRet_DualView_MCUVE": {
+          "clean_acc": 87.66,
+          "F1_fresnel_10pct_mean": 76.32,
+          "F1_drop": -11.34,
+          "F2_fp_dr_10pct_mean": 73.45,
+          "F2_drop": -14.21,
+          "F2_S2_fp_dr_15pct_mean": 81.19,
+          "F2_S2_drop": -6.47
+        },
+        "SNV_Only_MCUVE": {
+          "clean_acc": 86.65,
+          "F1_fresnel_10pct_mean": 86.65,
+          "F1_drop": -0.0,
+          "F2_fp_dr_10pct_mean": 80.65,
+          "F2_drop": -6.0,
+          "F2_S2_fp_dr_15pct_mean": 78.68,
+          "F2_S2_drop": -7.97
+        },
+        "Pure_rhoTF_MCUVE": {
+          "clean_acc": 83.12,
+          "F1_fresnel_10pct_mean": 83.58,
+          "F1_drop": 0.46,
+          "F2_fp_dr_10pct_mean": 78.64,
+          "F2_drop": -4.48,
+          "F2_S2_fp_dr_15pct_mean": 82.37,
+          "F2_S2_drop": -0.75
+        },
+        "TIRG_StrictTF_Sup_MCUVE": {
+          "clean_acc": 87.91,
+          "F1_fresnel_10pct_mean": 87.96,
+          "F1_drop": 0.05,
+          "F2_fp_dr_10pct_mean": 85.29,
+          "F2_drop": -2.62,
+          "F2_S2_fp_dr_15pct_mean": 85.47,
+          "F2_S2_drop": -2.44
+        },
+        "TIRG_StrictTF_Unsup_R": {
+          "clean_acc": 86.15,
+          "F1_fresnel_10pct_mean": 85.94,
+          "F1_drop": -0.21,
+          "F2_fp_dr_10pct_mean": 81.81,
+          "F2_drop": -4.34,
+          "F2_S2_fp_dr_15pct_mean": 83.8,
+          "F2_S2_drop": -2.35
+        }
+      },
+      "Ziziphi_Spinosae_Semen": {
+        "AmpRet_DualView_MCUVE": {
+          "clean_acc": 96.39,
+          "F1_fresnel_10pct_mean": 86.89,
+          "F1_drop": -9.5,
+          "F2_fp_dr_10pct_mean": 87.82,
+          "F2_drop": -8.57,
+          "F2_S2_fp_dr_15pct_mean": 91.45,
+          "F2_S2_drop": -4.94
+        },
+        "SNV_Only_MCUVE": {
+          "clean_acc": 91.98,
+          "F1_fresnel_10pct_mean": 91.94,
+          "F1_drop": -0.04,
+          "F2_fp_dr_10pct_mean": 89.1,
+          "F2_drop": -2.88,
+          "F2_S2_fp_dr_15pct_mean": 89.51,
+          "F2_S2_drop": -2.47
+        },
+        "Pure_rhoTF_MCUVE": {
+          "clean_acc": 95.19,
+          "F1_fresnel_10pct_mean": 95.55,
+          "F1_drop": 0.36,
+          "F2_fp_dr_10pct_mean": 92.42,
+          "F2_drop": -2.77,
+          "F2_S2_fp_dr_15pct_mean": 93.66,
+          "F2_S2_drop": -1.53
+        },
+        "TIRG_StrictTF_Sup_MCUVE": {
+          "clean_acc": 95.79,
+          "F1_fresnel_10pct_mean": 95.67,
+          "F1_drop": -0.12,
+          "F2_fp_dr_10pct_mean": 95.03,
+          "F2_drop": -0.76,
+          "F2_S2_fp_dr_15pct_mean": 95.52,
+          "F2_S2_drop": -0.27
+        },
+        "TIRG_StrictTF_Unsup_R": {
+          "clean_acc": 96.19,
+          "F1_fresnel_10pct_mean": 96.15,
+          "F1_drop": -0.04,
+          "F2_fp_dr_10pct_mean": 95.43,
+          "F2_drop": -0.76,
+          "F2_S2_fp_dr_15pct_mean": 95.46,
+          "F2_S2_drop": -0.73
+        }
+      },
+      "Gastrodia_elata": {
+        "AmpRet_DualView_MCUVE": {
+          "clean_acc": 98.51,
+          "F1_fresnel_10pct_mean": 95.89,
+          "F1_drop": -2.62,
+          "F2_fp_dr_10pct_mean": 90.4,
+          "F2_drop": -8.11,
+          "F2_S2_fp_dr_15pct_mean": 97.85,
+          "F2_S2_drop": -0.66
+        },
+        "SNV_Only_MCUVE": {
+          "clean_acc": 98.27,
+          "F1_fresnel_10pct_mean": 98.27,
+          "F1_drop": -0.0,
+          "F2_fp_dr_10pct_mean": 97.82,
+          "F2_drop": -0.45,
+          "F2_S2_fp_dr_15pct_mean": 98.18,
+          "F2_S2_drop": -0.09
+        },
+        "Pure_rhoTF_MCUVE": {
+          "clean_acc": 99.5,
+          "F1_fresnel_10pct_mean": 99.5,
+          "F1_drop": 0.0,
+          "F2_fp_dr_10pct_mean": 98.91,
+          "F2_drop": -0.59,
+          "F2_S2_fp_dr_15pct_mean": 98.76,
+          "F2_S2_drop": -0.74
+        },
+        "TIRG_StrictTF_Sup_MCUVE": {
+          "clean_acc": 99.5,
+          "F1_fresnel_10pct_mean": 99.5,
+          "F1_drop": 0.0,
+          "F2_fp_dr_10pct_mean": 99.36,
+          "F2_drop": -0.14,
+          "F2_S2_fp_dr_15pct_mean": 99.17,
+          "F2_S2_drop": -0.33
+        },
+        "TIRG_StrictTF_Unsup_R": {
+          "clean_acc": 99.75,
+          "F1_fresnel_10pct_mean": 99.75,
+          "F1_drop": 0.0,
+          "F2_fp_dr_10pct_mean": 99.5,
+          "F2_drop": -0.25,
+          "F2_S2_fp_dr_15pct_mean": 99.59,
+          "F2_S2_drop": -0.16
+        }
+      }
+    },
+    "cross_matrix_avg": {
+      "AmpRet_DualView_MCUVE": {
+        "clean_mean": 94.19,
+        "F1_mean": 86.37,
+        "F1_drop_mean": -7.82,
+        "F2_mean": 83.89,
+        "F2_drop_mean": -10.3,
+        "F2_S2_mean": 90.16,
+        "F2_S2_drop_mean": -4.02
+      },
+      "SNV_Only_MCUVE": {
+        "clean_mean": 92.3,
+        "F1_mean": 92.29,
+        "F1_drop_mean": -0.01,
+        "F2_mean": 89.19,
+        "F2_drop_mean": -3.11,
+        "F2_S2_mean": 88.79,
+        "F2_S2_drop_mean": -3.51
+      },
+      "Pure_rhoTF_MCUVE": {
+        "clean_mean": 92.6,
+        "F1_mean": 92.88,
+        "F1_drop_mean": 0.27,
+        "F2_mean": 89.99,
+        "F2_drop_mean": -2.61,
+        "F2_S2_mean": 91.6,
+        "F2_S2_drop_mean": -1.01
+      },
+      "TIRG_StrictTF_Sup_MCUVE": {
+        "clean_mean": 94.4,
+        "F1_mean": 94.38,
+        "F1_drop_mean": -0.02,
+        "F2_mean": 93.23,
+        "F2_drop_mean": -1.17,
+        "F2_S2_mean": 93.39,
+        "F2_S2_drop_mean": -1.01
+      },
+      "TIRG_StrictTF_Unsup_R": {
+        "clean_mean": 94.03,
+        "F1_mean": 93.95,
+        "F1_drop_mean": -0.08,
+        "F2_mean": 92.25,
+        "F2_drop_mean": -1.78,
+        "F2_S2_mean": 92.95,
+        "F2_S2_drop_mean": -1.08
+      }
+    },
+    "curve_rel_shifts": {
+      "Astragali_Radix": {
+        "raw_alpha_plus10_mean_rel_pct": 8.34,
+        "rho_f1_fresnel_plus10_mean_rel_pct": 0.83,
+        "rho_f2_fp_dr_plus10_mean_rel_pct": 0.83
+      },
+      "Ziziphi_Spinosae_Semen": {
+        "raw_alpha_plus10_mean_rel_pct": 8.37,
+        "rho_f1_fresnel_plus10_mean_rel_pct": 0.79,
+        "rho_f2_fp_dr_plus10_mean_rel_pct": 1.23
+      },
+      "Gastrodia_elata": {
+        "raw_alpha_plus10_mean_rel_pct": 10.68,
+        "rho_f1_fresnel_plus10_mean_rel_pct": 3.7,
+        "rho_f2_fp_dr_plus10_mean_rel_pct": 12.49
+      }
+    },
+    "notes": "Seed=42 outer 5-fold CV; F1=Exact Fresnel reflection mismatch (+-10% test, 5 draws); F2=Full complex Fabry-Perot + Beer-Lambert + -68 dB DR noise (+-10% test, 5 draws); F2_S2=Full FP+DR +-15% all-pellet retrain (3 draws)."
+  },
+  "repeatability_dr_correlation": {
+    "Astragali_Radix": {
+      "spearman_r_all": 0.8955,
+      "p_all": 3.28e-127,
+      "spearman_r_d0": 0.7146,
+      "p_d0": 3.34e-57,
+      "dr_022_db": 72.02,
+      "dr_104_db": 39.2,
+      "source_workbook": "黄芪内蒙古固阳202605310518.xlsx"
+    },
+    "Ziziphi_Spinosae_Semen": {
+      "spearman_r_all": 0.8964,
+      "p_all": 7.86e-128,
+      "spearman_r_d0": 0.8578,
+      "p_d0": 5.96e-105,
+      "dr_022_db": 71.89,
+      "dr_104_db": 27.42,
+      "source_workbook": "同仁堂安徽毫州202606070657.xlsx"
+    },
+    "Gastrodia_elata": {
+      "spearman_r_all": 0.8491,
+      "p_all": 1.06e-100,
+      "spearman_r_d0": 0.7719,
+      "p_d0": 5.09e-72,
+      "dr_022_db": 71.58,
+      "dr_104_db": 38.06,
+      "source_workbook": "天麻云南202609310678.xlsx"
+    }
+  },
+  "v21_addendum_elapsed_sec": 359.37
+}
